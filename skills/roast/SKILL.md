@@ -16,7 +16,7 @@ CRITICAL: Your role is READ-ONLY code review. Do NOT modify any project source f
 
 CRITICAL - MANDATORY STEPS - Execute all instructions - DO NOT SKIP:
 1. Sync remote branches - execute: `git fetch`
-2. Determine `BASE_BRANCH`: if the user specified a base branch, e.g. using words like "against", "vs", "compare", "base", etc., then use the specified branch name; otherwise use `HEAD`.
+2. Determine `BASE_BRANCH`: if the user specified a base branch, e.g. using words like "against", "vs", "compare", "base", etc., then use the specified branch name; otherwise use the remote's default branch (e.g., query `git symbolic-ref refs/remotes/origin/HEAD` or check if `main` or `master` exists; default to `main` if undetermined).
 3. Determine `yyyyMMdd-HHmmss` - get the actual current date and time by running a shell command - do not infer or guess.
 4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-short-feature-name}.diff` — replace the `yyyyMMdd-HHmmss` with the date and time from above. 
 5. Replace `BASE_BRANCH` and `DIFF_FILE` in the command below and execute: `git diff origin/BASE_BRANCH...HEAD --stat && git diff origin/BASE_BRANCH...HEAD > DIFF_FILE`
