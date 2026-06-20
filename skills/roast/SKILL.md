@@ -28,14 +28,14 @@ CRITICAL - MANDATORY STEPS - Execute all instructions - DO NOT SKIP:
 8. Access the relevant project files for surrounding context and details.
 9. Number each issue sequentially.
 10. For each issue mention:
- Severity: 🔥 Critical / 🔴 High / 🟡 Medium / 🔵 Low
- Full file path
- Absolute line numbers in the full project files (not diff line numbers)
- What's wrong
- How to fix it
+- Severity: 🔥 Critical / 🔴 High / 🟡 Medium / 🔵 Low
+- Full file path
+- Absolute line numbers in the full project files (not diff line numbers)
+- What's wrong
+- How to fix it
 11. Create an MD file at project root with the review results.
- Name the file as `ROAST-{yyyyMMdd-HHmmss}-{id-short-feature-name}.md` using the same date/time as for the diff file.
+- Name the file as `ROAST-{yyyyMMdd-HHmmss}-{id-short-feature-name}.md` using the same date/time as for the diff file.
 12. Check if `.git/info/exclude` already contains `ROAST-*` and if not, append it using the appropriate command for the platform:
- bash: `grep -qxF 'ROAST-*' .git/info/exclude || echo 'ROAST-*' >> .git/info/exclude`
- PowerShell: `if (-not (Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path ".git\info\exclude" -Value "ROAST-*" }`
+- bash: `grep -qxF 'ROAST-*' .git/info/exclude || echo 'ROAST-*' >> .git/info/exclude`
+- PowerShell: `if (-not (Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path ".git\info\exclude" -Value "ROAST-*" }`
 13. Use `git rm --cached --ignore-unmatch` for both the diff file and the report file to untrack them in git in case IDE automatically staged them.
