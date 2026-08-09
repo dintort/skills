@@ -30,11 +30,11 @@ Commit your local changes if you want them to be included in the review.
 The skill runs `git fetch` to refresh the remote base branch ref, but does **not** run `git pull`
 on your feature branch — so any local uncommitted or unpushed changes are preserved exactly as-is.
 
-> **Note:** Only committed changes are reviewed. Uncommitted (staged or unstaged) changes are not included in the diff.
+> **⚠️ Only committed changes are reviewed:** Uncommitted (staged or unstaged) changes are not included in the diff.
 
-> **⚠️ Use a large-context model.** The skill always reviews the whole diff in a single thread — it never splits large diffs across sub-agents, since a split review structurally can't catch interactions between separately-reviewed files. This means the reviewing model must be able to hold the entire diff (plus the source files it opens for context) at once. Small-context models (roughly below 200k tokens) can silently drop earlier instructions once a large diff fills their context — the skill will warn when the diff exceeds ~5000 changed lines, but on a small-context model that warning itself may already be lost. If you're reviewing a large diff, use a model with a generous context window (e.g. Claude Sonnet/Opus), or narrow the diff (smaller commits/PRs).
+> **⚠️ Size does matter:** The skill always reviews the whole diff in a single thread — it never splits large diffs across sub-agents, since a split review structurally can't catch interactions between separately reviewed files. This means the model must hold the entire diff (plus the source files it opens for context) at once. Small-context models (e.g. below 200k tokens) can silently drop earlier instructions once a large diff fills their context — the skill warns when the diff exceeds ~5000 changed lines or 1MB, but on a small-context model even that warning may already be lost. For large diffs, narrow the PR if you can't use a bigger-context model.
 
-In an agent chat choose a smart model (e.g. Sonnet) and invoke:
+In an agent chat choose a smart model with large context window (e.g. Sonnet with 1M) and invoke:
 
 ```
 /roast

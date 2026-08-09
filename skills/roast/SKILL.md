@@ -5,8 +5,6 @@ description: Merciless multi-axis code review on the current branch against the 
 
 # roast
 
-## Overview
-
 Multi-dimensional code review with quality gates. Review covers five axes: correctness, readability, architecture, security, and performance.
 
 # Review Guidelines
@@ -274,11 +272,7 @@ Part of code review is dependency review:
 
 ```
 
----
-
-# Orchestration
-
-## Automated Execution Setup
+# Execution
 
 **CRITICAL - MANDATORY STEPS - Execute all instructions - DO NOT SKIP:**
 
@@ -287,7 +281,11 @@ Part of code review is dependency review:
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
 5. Replace `BASE_BRANCH` and `DIFF_FILE` in this command and execute: `git --no-pager diff origin/BASE_BRANCH...HEAD --shortstat && git --no-pager diff origin/BASE_BRANCH...HEAD --numstat -p > DIFF_FILE`.
-6. If the changed line count (insertions + deletions from `--shortstat`) exceeds 10000, print a warning before proceeding: "Large diff (N changed lines) - review quality may degrade on models with small context windows (roughly below 200k tokens); consider a larger-context model or narrowing the diff." This is a rough heuristic, not a precise token estimate — print it regardless and continue the review either way.
+6. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (e.g. `wc -c < DIFF_FILE`),
+   then print a warning right away, before reading the full diff
+   (can potentially truncate your context window, and you forget instructions):
+  `Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
+   Then continue the review regardless.
 7. Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 
 **CRITICAL: Always review the entire diff directly in this thread. Never delegate review work to sub-agents and never split the diff across multiple agents, regardless of diff size.** A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
