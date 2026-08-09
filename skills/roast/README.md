@@ -32,6 +32,8 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 
 > **Note:** Only committed changes are reviewed. Uncommitted (staged or unstaged) changes are not included in the diff.
 
+> **⚠️ Use a large-context model.** The skill always reviews the whole diff in a single thread — it never splits large diffs across sub-agents, since a split review structurally can't catch interactions between separately-reviewed files. This means the reviewing model must be able to hold the entire diff (plus the source files it opens for context) at once. Small-context models (roughly below 200k tokens) can silently drop earlier instructions once a large diff fills their context — the skill will warn when the diff exceeds ~5000 changed lines, but on a small-context model that warning itself may already be lost. If you're reviewing a large diff, use a model with a generous context window (e.g. Claude Sonnet/Opus), or narrow the diff (smaller commits/PRs).
+
 In an agent chat choose a smart model (e.g. Sonnet) and invoke:
 
 ```

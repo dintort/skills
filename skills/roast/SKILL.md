@@ -9,16 +9,6 @@ description: Merciless multi-axis code review on the current branch against the 
 
 Multi-dimensional code review with quality gates. Review covers five axes: correctness, readability, architecture, security, and performance.
 
-This file has two parts:
-- **Review Guidelines** — the review methodology and standards. Applies identically whether the main agent reviews directly or delegates to sub-agents. When delegating, forward this entire part to each sub-agent verbatim.
-- **Orchestration** — main-agent-only mechanics (git/diff setup, delegation sizing, artifact finalization). Never forward this part to sub-agents.
-
----
-
-*(Forward the following entire 'Review Guidelines' section verbatim to any sub-agent used for delegated review, see Orchestration → Delegating to Sub-Agents.)*
-
----
-
 # Review Guidelines
 
 **CRITICAL:** Your role is READ-ONLY code reviewer. Do NOT modify any project source files during the review.
@@ -141,6 +131,7 @@ Tests reveal intent and coverage:
 
 - CRITICAL: Read surrounding source files and relevant related files needed to understand the context, not only diff hunks. This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before a nearby unchanged block, making present code look deleted or absent. Skimming hunks instead of opening the full current file leads to failures.
 - CRITICAL: For every call site, import, or script invocation in the diff, read the callee. "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
+- CRITICAL: For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers outside the diff and verify they still hold under the new behavior. Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break an unchanged caller.
 - CRITICAL: Do NOT read any ROAST files left over from prior runs (past review reports or diffs). Do NOT delete them either unless explicitly asked.
 - CRITICAL: Do NOT read roast/README.md - this is for humans, not for you.
 - CRITICAL: Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command.
@@ -285,10 +276,6 @@ Part of code review is dependency review:
 
 ---
 
-*(Cut off here. Main-thread-only. Do NOT forward the following Orchestration section to sub-agents.)*
-
----
-
 # Orchestration
 
 ## Automated Execution Setup
@@ -300,35 +287,10 @@ Part of code review is dependency review:
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
 5. Replace `BASE_BRANCH` and `DIFF_FILE` in this command and execute: `git --no-pager diff origin/BASE_BRANCH...HEAD --shortstat && git --no-pager diff origin/BASE_BRANCH...HEAD --numstat -p > DIFF_FILE`.
-6. Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself on the main thread first to understand the context, even if you will delegate the review tasks to sub-agents.
+6. If the changed line count (insertions + deletions from `--shortstat`) exceeds 10000, print a warning before proceeding: "Large diff (N changed lines) - review quality may degrade on models with small context windows (roughly below 200k tokens); consider a larger-context model or narrowing the diff." This is a rough heuristic, not a precise token estimate — print it regardless and continue the review either way.
+7. Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 
-## Scaling Review Effort by Diff Size
-
-Use the line count to decide whether to review directly on main thread or delegate to sub-agents. Line count is the primary metric because it tracks the actual review workload (diff content plus surrounding source context an agent must hold).
-
-```
-agent_count = clamp(ceil((insertions + deletions) / 6000), 1, 8)
-```
-
-Override: **never split beyond the number of genuinely independent modules actually present in the diff.** A diff touching only 1-2 cohesive modules stays a direct review (or at most 1-2 agents) even if the formula suggests more — splitting one cohesive area just fragments context without reducing it. If `agent_count` is 1, skip sub-agents entirely and run on main thread.
-
-When splitting, split along **natural module/architectural boundaries** (e.g. "storage layer", "API/server layer"), not arbitrary file slices — each sub-agent's findings should read as a coherent review of one area.
-
-**Coverage invariant:** every file listed in the numstat output must be assigned to at least one reviewer — either the main agent (if reviewing directly) or a sub-agent's scope. This includes documentation, config, and fixture files — no exclusions. Before finalizing scopes, reconcile the full assignment list against the numstat file list and account for every path; do not let any file go unassigned.
-
-### Delegating to Sub-Agents
-
-- Forward the entire **Review Guidelines** part of this file (everything from the `# Review Guidelines` to the end of the file) to each sub-agent verbatim, plus the exact absolute file paths in its scope. Do not paraphrase or summarize the guidelines. Do not forward this Orchestration part.
-- Give each sub-agent the resolved `BASE_BRANCH` and a ready-to-run scoped diff command (e.g. `git --no-pager diff origin/BASE_BRANCH...HEAD -p -- <assigned file paths>`).
-- Tell each sub-agent explicitly to follow the Review Output Template so its findings can be concatenated into the final report with minimal rework.
-- Tell each sub-agent to write its complete findings to a file at the project root, named `ROAST-{timestamp}-{sub-scope-name}.md` (same timestamp as `DIFF_FILE`; `sub-scope-name` a short slug for its assigned area, e.g. `datasource`, `server-ui`), and mandate that the sub-agent MUST print out the exact absolute file path of the report that it created.
-
-### Aggregating Sub-Agent Results
-
-- Once all sub-agents have returned, read each sub-agent's report file in full and merge their contents into a single report. Do NOT summarize or paraphrase the sub-reports findings - include all the details verbatim.
-
-1. Collect every issue from every sub-agent's output.
-2. Concatenate the sub-agents' reviews into the final report - add chapter headings, including chapter number, for each sub-report.
+**CRITICAL: Always review the entire diff directly in this thread. Never delegate review work to sub-agents and never split the diff across multiple agents, regardless of diff size.** A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
 
 ## Artifact Finalization
 
@@ -339,12 +301,11 @@ CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 3. Check if `.git/info/exclude` already contains `ROAST-*` and if not, append it:
 - bash: `grep -qxF 'ROAST-*' .git/info/exclude || echo 'ROAST-*' >> .git/info/exclude`
 - PowerShell: `if (-not (Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path ".git\info\exclude" -Value "ROAST-*" }`
-4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file, the report file, and the sub-reports (if any).
+4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file.
 
 ## Post review
 
 - Once the review report is created, it is READ-ONLY - do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
-  In case of concatenated sub-reports, refer as <chapterN>.<issueN>.
 
 ---
