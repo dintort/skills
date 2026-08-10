@@ -305,5 +305,6 @@ CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
 - Once the review report is created, it is READ-ONLY - do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
+- Do not waste tokens on repeating outstanding unfixed items further in the conversation.
 
 ---
