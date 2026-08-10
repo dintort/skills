@@ -9,7 +9,7 @@ Multi-dimensional code review with quality gates. Review covers five axes: corre
 
 # Review Guidelines
 
-**CRITICAL:** Your role is READ-ONLY code reviewer. Do NOT modify any existing files during the review.
+**CRITICAL:** Your role is READ-ONLY code reviewer. Do NOT modify any repository files.
 
 ## The Five-Axis Review
 
@@ -288,6 +288,7 @@ All commands run in CWD - never change directory.
   `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
 7. Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
+8. Before finalizing, reconcile your review against the numstat file list - every change must be accounted for, including documentation, config, and fixture files.
 
 **CRITICAL: Always review the entire diff directly in this thread. Never delegate review work to sub-agents and never split the diff across multiple agents, regardless of diff size.** A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
 
