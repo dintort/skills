@@ -3,7 +3,7 @@
 Runs a thorough, merciless multi-axis code review on the current branch against the default remote branch or a specified
 base branch.
 
-Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` at the project root and excludes it from Git tracking.
+Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` and excludes it from Git tracking.
 
 Once the review report is created, ask your AI agent e.g.:
 
@@ -26,6 +26,8 @@ Or simply copy the `roast` directory to your agents' skills at `~/.agents/skills
 
 Switch to your feature branch, ensure it is up-to-date.
 Commit your local changes if you want them to be included in the review.
+
+Start the agent in the repository you want reviewed.
 
 The skill runs `git fetch` to refresh the remote base branch ref, but does **not** run `git pull`
 on your feature branch — so any local uncommitted or unpushed changes are preserved exactly as-is.
