@@ -296,10 +296,10 @@ CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
 1. **Context Check:** If your conversation was truncated during the review process, you MUST re-read this entire skill file to restore exact templates and guidelines before proceeding. Do not guess the format.
 2. Create an MD file at the repository root with the review results. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
-3. Check if `.git/info/exclude` already contains `ROAST-*` and if not, append it:
-- bash: `grep -qxF 'ROAST-*' .git/info/exclude || echo 'ROAST-*' >> .git/info/exclude`
-- PowerShell: `if (-not (Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path ".git\info\exclude" -Value "ROAST-*" }`
-4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file.
+3. Check if `.git/info/exclude` already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
+- bash: `grep -qxF 'ROAST-*' .git/info/exclude || echo 'ROAST-*' >> .git/info/exclude; grep -xF 'ROAST-*' .git/info/exclude`
+- PowerShell: `if (-not (Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path ".git\info\exclude" -Value "ROAST-*" }; Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$"`
+4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not append this command to the previous ones, run separately.
 
 ## Post review
 
