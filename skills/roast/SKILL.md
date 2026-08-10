@@ -276,6 +276,8 @@ Part of code review is dependency review:
 
 **CRITICAL - MANDATORY STEPS - Execute all instructions - DO NOT SKIP:**
 
+All commands run in CWD - never change directory.
+
 1. Sync remote branches: execute `git fetch`.
 2. Determine `BASE_BRANCH`: if the user specified a base branch (e.g. using words like "against"/"vs"/"compare"/"base"/etc.), then use the specified branch name. Otherwise, use `HEAD` (resolves to the remote's default branch via the `origin/HEAD` symbolic ref), e.g. `git --no-pager diff origin/HEAD...HEAD`. If the current branch is the default branch then BASE_BRANCH='release' (meaning you will review the changes made in the default branch against the 'release' branch - do NOT attempt to swap branches the other way around). If the 'release' branch does not exist or if it unclear what to review against, ask the user for the base branch to review against.
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
@@ -295,11 +297,11 @@ Part of code review is dependency review:
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
 1. **Context Check:** If your conversation was truncated during the review process, you MUST re-read this entire skill file to restore exact templates and guidelines before proceeding. Do not guess the format.
-2. Create an MD file at the repository root with the review results. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
-3. Check if `.git/info/exclude` already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
-- bash: `grep -qxF 'ROAST-*' .git/info/exclude || echo 'ROAST-*' >> .git/info/exclude; grep -xF 'ROAST-*' .git/info/exclude`
-- PowerShell: `if (-not (Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path ".git\info\exclude" -Value "ROAST-*" }; Select-String -Path ".git\info\exclude" -Pattern "^ROAST-\*$"`
-4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not append this command to the previous ones, run separately.
+2. Create an MD file with the review results in CWD. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
+3. Check if git exclusions already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
+   - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
+   - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
+4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not chain this command to the previous ones, run separately.
 
 ## Post review
 
