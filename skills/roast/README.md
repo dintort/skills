@@ -34,7 +34,12 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 
 > **⚠️ Only committed changes are reviewed:** Uncommitted (staged or unstaged) changes are not included in the diff.
 
-> **⚠️ Size does matter:** The skill always reviews the whole diff in a single thread — it never splits large diffs across sub-agents, since a split review structurally can't catch interactions between separately reviewed files. This means the model must hold the entire diff (plus the source files it opens for context) at once. Small-context models (e.g. below 200k tokens) can silently drop earlier instructions once a large diff fills their context — the skill warns when the diff exceeds ~5000 changed lines or 1MB, but on a small-context model even that warning may already be lost. For large diffs, narrow the PR if you can't use a bigger-context model.
+> **⚠️ Size does matter:** Use a large-context model, and/or narrow the diff.
+> The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
+> (a split review couldn't catch interactions between separately reviewed files).
+> Once the context window overflows, earlier instructions get silently evicted
+> and the review degrades without saying so.
+> The skill warns when the diff exceeds ~5000 lines or 1MB.
 
 In an agent chat choose a smart model with large context window (e.g. Sonnet with 1M) and invoke:
 
