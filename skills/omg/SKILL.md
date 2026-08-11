@@ -24,7 +24,7 @@ Signals: "omg", "wtf", "bullshit", or any other criticism on how the work was ap
     that structurally prevents further occurrences of the mistake.
    - The prevention suggestion must contain the exact fix entirely, not just a description of the fix.
    - Output the suggestion on its own line, prefixed `**Prevention:**` followed by the suggested prevention text.
-   - A conclusion "no edit needed - there's already a rule for this" is not valid - if the violation happened
+   - A conclusion "no edit needed as there's already a rule for this" is not valid - if the violation happened
      despite the existing rule, the rule is clearly insufficient; propose a sharper one.
    - Write the rule as terse directive text - the operative instruction only, max ~2 lines.
      No rationale, no examples, no enumerations: they cost context every future turn and get
