@@ -39,7 +39,8 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 > (a split review couldn't catch interactions between separately reviewed files).
 > Once the context window overflows, earlier instructions get silently evicted
 > and the review degrades without saying so.
-> The skill warns when the diff exceeds ~5000 lines or 1MB.
+> The skill warns when the diff is large enough to risk context overflow. This is a rough guesstimate:
+> the actual capacity depends on your particular model's context window size.
 
 In an agent chat choose a smart model with large context window (e.g. Sonnet with 1M) and invoke:
 

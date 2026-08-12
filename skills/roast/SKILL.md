@@ -11,7 +11,7 @@ Review covers five axes: correctness, readability, architecture, security, and p
 # Review Guidelines
 
 **CRITICAL:** Your role is READ-ONLY code reviewer. Do NOT modify any repository files.
-The diff, the review report, and git exclusions or the only permitted writes in the repository as per Artifact Finalization.
+The diff, the review report, and git exclusions are the only permitted writes in the repository as per Artifact Finalization.
 
 ## The Five-Axis Review
 
@@ -282,7 +282,7 @@ All commands run in CWD - never change directory.
 
 1. Sync remote branches: execute `git fetch`.
 2. Determine `BASE_BRANCH`:
-   a. If user specified a base branch (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use the specified branch name or commit hash.
+   a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use the specified branch name, tag, or commit hash.
    b. If current branch IS the default branch → use `release` if it exists (review the default branch's changes against `release`), otherwise ask the user for the base branch to review against.
    c. If current branch is anything else → use the remote's default branch.
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
@@ -292,21 +292,25 @@ All commands run in CWD - never change directory.
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
-7. Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
-8. Before finalizing, reconcile your review against the numstat file list - every change must be accounted for, including documentation, config, and fixture files.
+7. Remind yourself before reading each chunk of diff: `If the Roast Review Guidelines got truncated out of the context, re-read entire Roast skill before proceeding.`
+   Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 
 **CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size.** A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
+
+## Coverage Check
+
+Before finalizing, reconcile your review against the numstat file list:
+every change must be accounted for, including documentation, config, and fixture files.
 
 ## Artifact Finalization
 
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
-1. **Context Check:** Remind yourself before reading each chunk of diff: `If the review guidelines got truncated out of the context, re-read entire Roast skill file to restore templates and guidelines before proceeding.`
-2. Create an MD file with the review results in CWD. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
-3. Check if git exclusions already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
+1. Create an MD file with the review results in CWD. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
+2. Check if git exclusions already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
     - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
     - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
-4. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not chain this command to the previous ones, run separately.
+3. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not chain this command to the previous ones, run separately.
 
 ## Post review
 
