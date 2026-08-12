@@ -5,11 +5,13 @@ description: Merciless multi-axis code review on the current branch against the 
 
 # roast
 
-Multi-dimensional code review with quality gates. Review covers five axes: correctness, readability, architecture, security, and performance.
+Multi-dimensional code review with quality gates.
+Review covers five axes: correctness, readability, architecture, security, and performance.
 
 # Review Guidelines
 
 **CRITICAL:** Your role is READ-ONLY code reviewer. Do NOT modify any repository files.
+The diff, the review report, and git exclusions or the only permitted writes in the repository as per Artifact Finalization.
 
 ## The Five-Axis Review
 
@@ -299,7 +301,7 @@ All commands run in CWD - never change directory.
 
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
-1. **Context Check:** If your conversation was truncated during the review process, you MUST re-read this entire skill file to restore exact templates and guidelines before proceeding. Remind about it to yourself before reading each chunk of diff.
+1. **Context Check:** Remind yourself before reading each chunk of diff: `If the review guidelines got truncated out of the context, re-read entire Roast skill file to restore templates and guidelines before proceeding.`
 2. Create an MD file with the review results in CWD. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
 3. Check if git exclusions already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
     - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`

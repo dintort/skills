@@ -3,13 +3,13 @@
 Runs a thorough, merciless multi-axis code review on the current branch against the default remote branch or a specified
 base branch.
 
-Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` and excludes it from Git tracking.
+Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` in current directory and excludes it from Git tracking.
 
 Once the review report is created, ask your AI agent e.g.:
 
-- create a failing test to reproduce #1
-- fix #2
-- elaborate and explain #3
+- create a failing test to reproduce 1
+- fix 2
+- elaborate and explain 3
 
 After you have addressed the found issues, start a new chat session and run the roast again - it could find issues that
 it missed the first time or new issues introduced by the fixing. Rinse and repeat until satisfied.
