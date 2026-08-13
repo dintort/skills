@@ -282,7 +282,7 @@ All commands run in CWD - never change directory.
 
 1. Sync remote branches: execute `git fetch`.
 2. Determine `BASE_REF`:
-   a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → a branch name becomes `origin/<name>`; a tag or commit hash is used verbatim.
+   a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>` if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
    b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
    c. Else if current branch is anything else → use the remote's default branch.
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
