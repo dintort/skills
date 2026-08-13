@@ -6,7 +6,7 @@ description: Origin → Mechanism → Guardrail. Use when the user corrects a pr
 # omg - Origin → Mechanism → Guardrail
 
 Triggered by a correction on process (a violated instruction, a skipped step, a broken rule).
-Signals: "omg", "wtf", "bullshit", or any other criticism on how the work was approached.
+Signals: "omg", "wtf", "bullshit", or any other criticism of how the work was approached.
 
 ## Steps
 
