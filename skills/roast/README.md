@@ -39,7 +39,7 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 > **If your agent literally roasted your code instead of doing the multi-axis code review,
 > it is a sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
 > 
-> Use a large-context model, and/or narrow the diff.
+> Use a large-context model and/or narrow the diff.
 > 
 > The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
 > (a split review couldn't catch interactions between separately reviewed files).
@@ -67,7 +67,7 @@ Submit button is disabled until all fields pass validation. Error messages are s
 ```
 
 By default, the review compares against the remote default branch.
-To use a different base:
+To specify a different base, use keywords "vs", "against", "compare", or "base":
 
 ```
 /roast vs dev
