@@ -1,12 +1,9 @@
 ---
 name: omg
-description: Origin → Mechanism → Guardrail. Use when the user corrects a process mistake - keywords "omg", "wtf". Explain the root cause and propose a persistent prevention.
+description: Origin → Mechanism → Guardrail. Explains the root cause of a process mistake and propose a persistent prevention.
 ---
 
 # omg - Origin → Mechanism → Guardrail
-
-Triggered by a correction on process (a violated instruction, a skipped step, a broken rule).
-Signals: "omg", "wtf".
 
 ## Steps
 
@@ -39,7 +36,7 @@ Signals: "omg", "wtf".
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
           User's correction to the suggested prevention measure IS NOT a completion of the protocol:
           you MUST keep working on the prevention measure until confirmed by user.
-      - If applicable, output the violation fix formatted as:
+    - If applicable, output the violation fix formatted as:
       ```
       **Fix**
  
@@ -48,7 +45,7 @@ Signals: "omg", "wtf".
       ```
     - Output the prevention formatted as:
       ```
-      **Prevention**
+      **Guardrail**
  
       - Where: <where it should be applied>
       - What: <exact content of the prevention measure (not just summary)>

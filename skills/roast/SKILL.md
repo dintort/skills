@@ -294,6 +294,7 @@ All commands run in CWD - never change directory.
    Then continue the review regardless.
 7. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
+8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
 
 ## Coverage Check
 
@@ -304,7 +305,7 @@ every change must be accounted for, including documentation, config, and fixture
 
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
-1. Create an MD file with the review results in CWD. Determine `short-change-title` (one-three words) and name the report file `ROAST-{yyyyMMdd-HHmmss}-{id-short-change-title}.md` using same timestamp as diff file. Do NOT output the review directly in the chat.
+1. Ensure the report file is complete - every finding accounted for.
 2. Check if git exclusions already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
     - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
     - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
@@ -312,6 +313,6 @@ CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
 ## Post review
 
-- Once the review report is created, it is READ-ONLY - do NOT update it further in the conversation.
+- Once the review is finished and the review report is finalized, it is READ-ONLY - do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
 - Do not re-list outstanding unfixed items further in conversation (unless requested).
