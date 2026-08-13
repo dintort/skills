@@ -281,13 +281,13 @@ Part of code review is dependency review:
 All commands run in CWD - never change directory.
 
 1. Sync remote branches: execute `git fetch`.
-2. Determine `BASE_BRANCH`:
-   a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use the specified branch name, tag, or commit hash.
-   b. If current branch IS the default branch → use `release` if it exists (review the default branch's changes against `release`), otherwise ask the user for the base branch to review against.
-   c. If current branch is anything else → use the remote's default branch.
+2. Determine `BASE_REF`:
+   a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → a branch name becomes `origin/<name>`; a tag or commit hash is used verbatim.
+   b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
+   c. Else if current branch is anything else → use the remote's default branch.
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
-5. Replace `BASE_BRANCH` and `DIFF_FILE` in this command and execute: `git --no-pager diff origin/BASE_BRANCH...HEAD --shortstat && git --no-pager diff origin/BASE_BRANCH...HEAD --numstat -p > DIFF_FILE`.
+5. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
 6. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (e.g. `wc -c < DIFF_FILE`),
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`

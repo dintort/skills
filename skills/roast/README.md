@@ -34,7 +34,7 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 
 > **⚠️ Only committed changes are reviewed:** Uncommitted (staged or unstaged) changes are not included in the diff.
 
-> **⚠️ Size matters:** 
+> **⚠️ Size matters:**
 > **If your agent literally roasted your code instead of doing the multi-axis code review,
 > it is a clear sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
 > Use a large-context model, and/or narrow the diff.
