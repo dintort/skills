@@ -34,15 +34,16 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 
 > **⚠️ Only committed changes are reviewed:** Uncommitted (staged or unstaged) changes are not included in the diff.
 
-> **⚠️ Size matters:** Use a large-context model, and/or narrow the diff.
+> **⚠️ Size matters:** 
+> **If your agent literally roasted your code instead of doing the multi-axis code review,
+> it is a clear sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
+> Use a large-context model, and/or narrow the diff.
 > The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
 > (a split review couldn't catch interactions between separately reviewed files).
 > Once the context window overflows, earlier instructions get silently evicted
 > and the review degrades without saying so.
-> The skill warns when the diff is large enough to risk context overflow. This is a rough guesstimate:
+> The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
 > the actual capacity depends on your particular model's context window size.
-> **If your agent literally roasted your code instead of doing the multi-axis code review,
-> it is a clear sign that the diff was too big and the review guidelines got pushed out of context.**
 
 In an agent chat choose a smart model with large context window (e.g. Sonnet with 1M) and invoke:
 
