@@ -280,11 +280,11 @@ Part of code review is dependency review:
 
 All commands run in CWD - never change directory.
 
-1. Sync remote branches: execute `git fetch`.
+1. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline), flag it and continue with local refs only.
 2. Determine `BASE_REF`:
    a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>` if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
    b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
-   c. Else if current branch is anything else → use the remote's default branch.
+   c. Else if current branch is anything else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
 5. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
