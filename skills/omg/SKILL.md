@@ -36,19 +36,21 @@ Signals: "omg", "wtf".
     - When the correction's fix is a code/config edit, you MUST still provide the PREVENTION suggestion.
     - Abandon the previous task in progress - do NOT attempt to immediately fix the violation:
       your SOLE focus now is preventing its future occurrences.
-        - CRITICAL: Do not return the previous task until EXPLICITLY requested by the user once this protocol completes.
+        - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
           User's correction to the suggested prevention measure IS NOT a completion of the protocol:
           you MUST keep working on the prevention measure until confirmed by user.
-    - Output the suggestions formatted as:
+      - If applicable, output the violation fix formatted as:
       ```
       **Fix**
  
-      - Where: <where it shoud be applied>
+      - Where: <where it should be applied>
       - What: <exact content of the fix (not just summary)>
-      
+      ```
+    - Output the prevention formatted as:
+      ```
       **Prevention**
  
-      - Where: <where it shoud be applied>
+      - Where: <where it should be applied>
       - What: <exact content of the prevention measure (not just summary)>
       ```
     - Finish by asking the user what to apply.
@@ -59,4 +61,3 @@ Signals: "omg", "wtf".
         - Apply the fix to the violation.
         - Apply both.
         - Apply neither.
- 
