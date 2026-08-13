@@ -1,12 +1,12 @@
 ---
 name: omg
-description: Origin → Mechanism → Guardrail. Use when the user corrects a process mistake - keywords "omg", "wtf", "bullshit", or any criticism of your behaviour. Explain the root cause and propose a persistent prevention.
+description: Origin → Mechanism → Guardrail. Use when the user corrects a process mistake - keywords "omg", "wtf". Explain the root cause and propose a persistent prevention.
 ---
 
 # omg - Origin → Mechanism → Guardrail
 
 Triggered by a correction on process (a violated instruction, a skipped step, a broken rule).
-Signals: "omg", "wtf", "bullshit", or any other criticism of how the work was approached.
+Signals: "omg", "wtf".
 
 ## Steps
 

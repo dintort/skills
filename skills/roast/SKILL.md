@@ -1,6 +1,6 @@
 ---
 name: roast
-description: Merciless multi-axis code review on the current branch against the default remote branch or a specified base branch. Checks for bugs, security vulnerabilities, performance issues, and more. Generates a Markdown report.
+description: Merciless multi-axis code review on the current branch against the default remote branch or a specified base branch, tag, or commit. Checks for bugs, security vulnerabilities, performance issues, and more. Generates a Markdown report.
 ---
 
 # roast
@@ -288,11 +288,11 @@ All commands run in CWD - never change directory.
 3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
 5. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
-6. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (e.g. `wc -c < DIFF_FILE`),
+6. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (`wc -c < DIFF_FILE`),
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
-7. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff. 
+7. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 
 ## Coverage Check

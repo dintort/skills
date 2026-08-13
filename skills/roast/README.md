@@ -1,9 +1,10 @@
 # roast - Merciless Code Review
 
-Runs a thorough, merciless multi-axis code review on the current branch against the default remote branch or a specified
-base branch.
+Runs a thorough, merciless multi-axis code review on the current branch against the default remote branch
+or a specified base.
 
-Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` in current directory and excludes it from Git tracking.
+Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` in the current directory
+and excludes it from Git tracking.
 
 Once the review report is created, ask your AI agent e.g.:
 
@@ -36,12 +37,16 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 
 > **⚠️ Size matters:**
 > **If your agent literally roasted your code instead of doing the multi-axis code review,
-> it is a clear sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
+> it is a sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
+> 
 > Use a large-context model, and/or narrow the diff.
+> 
 > The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
 > (a split review couldn't catch interactions between separately reviewed files).
+> 
 > Once the context window overflows, earlier instructions get silently evicted
 > and the review degrades without saying so.
+> 
 > The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
 > the actual capacity depends on your particular model's context window size.
 
@@ -61,10 +66,13 @@ Add validation: Luhn check for card number, future-date check for expiry, and 3-
 Submit button is disabled until all fields pass validation. Error messages are shown inline.
 ```
 
-By default, the review compares against the remote default branch (`origin/HEAD`). To use a different base branch:
+By default, the review compares against the remote default branch.
+To use a different base:
 
 ```
-/roast against dev
+/roast vs dev
+/roast against v26.3.0
+/roast base 1cf7dac8
 ```
 
 ## ⚠️ DISCLAIMER
