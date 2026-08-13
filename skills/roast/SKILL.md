@@ -5,19 +5,16 @@ description: Merciless multi-axis code review on the current branch against the 
 
 # roast
 
-Multi-dimensional code review with quality gates.
-Review covers five axes: correctness, readability, architecture, security, and performance.
-
-# Review Guidelines
+## Review Guidelines
 
 **CRITICAL:** Your role is READ-ONLY code reviewer.
 Do NOT modify any repository files (except the artifacts as per Artifact Finalization).
 
-## The Five-Axis Review
+### The Five-Axis Review
 
 Every review evaluates code across these dimensions:
 
-### 1. Correctness
+#### 1. Correctness
 
 Does the code do what it claims to do?
 
@@ -30,7 +27,7 @@ Does the code do what it claims to do?
 - Are concurrency risks handled correctly (ordering, state updates, locking/transaction boundaries)?
 - Is backward compatibility preserved where required?
 
-### 2. Readability & Simplicity
+#### 2. Readability & Simplicity
 
 Can another engineer (or agent) understand this code without explanation
 
@@ -46,7 +43,7 @@ Can another engineer (or agent) understand this code without explanation
 - **Do repeated conditionals on the same shape appear?** They signal a missing model or dispatcher. A "temporary" branch is usually permanent debt.
 - Suggest concrete improvements for readability, maintainability, naming, and refactoring.
 
-### 3. Architecture
+#### 3. Architecture
 
 Does the change fit the system's design?
 
@@ -59,7 +56,7 @@ Does the change fit the system's design?
 - **Is feature-specific logic leaking into a shared or general-purpose module?** Keep logic in its owning layer, reuse the existing canonical helper instead of a near-duplicate, and don't normalize architectural drift.
 - **Are type boundaries explicit?** Question gratuitous `any`/`unknown`/optional/casts and silent fallbacks that paper over an unclear invariant — making the boundary explicit often makes the surrounding control flow simpler.
 
-### 4. Security
+#### 4. Security
 
 - Does the change introduce vulnerabilities?
 - Is user input validated and sanitized?
@@ -73,7 +70,7 @@ Does the change fit the system's design?
 - Is data from external sources (APIs, logs, user content, config files) treated as untrusted?
 - Are external data flows validated at system boundaries before use in logic or rendering?
 
-### 5. Performance
+#### 5. Performance
 
 - Does the change introduce performance problems?
 - Any N+1 query patterns?
@@ -84,11 +81,11 @@ Does the change fit the system's design?
 - Any large objects created in hot paths?
 - Any memory leaks or resource lifecycle issues?
 
-### Any other issues?
+#### Any other issues?
 
 - Identify any other issues not specifically listed above.
 
-## Structural Remedies
+### Structural Remedies
 
 When you flag a structural problem, propose the move — not just the problem. A review that only says "this is complex" leaves the author guessing. Reach for a named restructuring:
 
@@ -103,9 +100,9 @@ When you flag a structural problem, propose the move — not just the problem. A
 
 Prefer the remedy that removes moving pieces over one that spreads the same complexity around.
 
-## Review Process
+### Review Process
 
-### Step 1: Understand the Context
+#### Step 1: Understand the Context
 
 Read the spec or task description to understand the intent (if provided)
 
@@ -115,7 +112,7 @@ Read the spec or task description to understand the intent (if provided)
 - What is the expected behavior change?
 ```
 
-### Step 2: Review the Tests First
+#### Step 2: Review the Tests First
 
 Tests reveal intent and coverage:
 
@@ -127,7 +124,7 @@ Tests reveal intent and coverage:
 - Would the tests catch a regression if the code changed?
 ```
 
-### Step 3: Review the Implementation
+#### Step 3: Review the Implementation
 
 - Read surrounding source files and relevant related files needed to understand the context, not only diff hunks. This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before a nearby unchanged block, making present code look deleted or absent. Skimming hunks instead of opening the full current file leads to failures.
 - For every call site, import, or script invocation in the diff, read the callee. "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
@@ -146,7 +143,7 @@ For each file changed:
 5. Performance: Any bottlenecks?
 ```
 
-## Severity Classification
+### Severity Classification
 
 | Severity                | Meaning           | Author Action                                                         |
 |-------------------------|-------------------|-----------------------------------------------------------------------|
@@ -156,11 +153,11 @@ For each file changed:
 | **✨ Suggestion**       | Recommendation    | Consider improvement (naming, code style, optional optimization) |
 | **💡 FYI**              | Informational only | No action needed — context for future reference                       |
 
-## Dead Code Hygiene
+### Dead Code Hygiene
 
 Check for orphaned code - identify code that is now unreachable or unused
 
-## Handling Disagreements
+### Handling Disagreements
 
 When resolving review disputes, apply this hierarchy:
 
@@ -169,14 +166,14 @@ When resolving review disputes, apply this hierarchy:
 3. **Software design** must be evaluated on engineering principles, not personal preference
 4. **Codebase consistency** is acceptable if it doesn't degrade overall health
 
-## Honesty in Review
+### Honesty in Review
 
 - **Don't soften real issues.** "This might be a minor concern" when it's a bug that will hit production is dishonest. Be thorough, harsh, and merciless. It is better to surface a finding that later gets filtered out than to silently drop a real bug. Your goal is maximum coverage.
 - **Quantify problems when possible.** "This N+1 query will add ~50ms per item in the list" is better than "this could be slow."
 - **Push back on approaches with clear problems.** Sycophancy is a failure mode in reviews. If the implementation has issues, say so directly and propose alternatives.
 - **Don't praise.** Skip compliments on what was done good and focus solely on identifying issues.
 
-## Dependency Discipline
+### Dependency Discipline
 
 Part of code review is dependency review:
 
@@ -197,7 +194,7 @@ Part of code review is dependency review:
 4. **Mind the transitive graph.** Most installed packages are ones nobody chose directly. Review the lockfile diff, not just `package.json`; a single direct bump can pull in dozens of indirect changes.
 5. **Keep the lockfile honest.** Commit it, review its diff, and never hand-edit it. The lockfile is the thing that actually pins what ships.
 
-## The Review Checklist
+### The Review Checklist
 
 ```markdown
 ### Context
@@ -234,7 +231,7 @@ Part of code review is dependency review:
 - [ ] Pagination on list endpoints
 ```
 
-## Red Flags
+### Red Flags
 
 - Security-sensitive changes without security-focused review
 - No regression tests with bug fix PRs
@@ -247,7 +244,7 @@ Part of code review is dependency review:
 
 **Presumptive blockers:** surface and propose the simpler design for each of these; escalate to Required only when the change actively makes structure worse: a refactor that relocates complexity instead of reducing it; a change that pushes a file past the size boundary with no decomposition; feature logic added to a shared module; a near-duplicate of an existing canonical helper; a silent fallback that hides an unclear invariant.
 
-## Review Output Template
+### Review Output Template
 
 - Append to the review report as you go, do NOT wait till the end to write the whole report. CRITICAL: Do NOT sort by severity. List issues in the exact chronological order you find them.
 - Use the following structured format for each finding.
@@ -274,7 +271,7 @@ Part of code review is dependency review:
 
 ```
 
-# Execution
+## Execution
 
 **CRITICAL - MANDATORY STEPS - Execute all instructions - DO NOT SKIP:**
 
@@ -296,12 +293,12 @@ All commands run in CWD - never change directory.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
 
-## Coverage Check
+### Coverage Check
 
 Before finalizing, reconcile your review against the numstat file list:
 every change must be accounted for, including documentation, config, and fixture files.
 
-## Artifact Finalization
+### Artifact Finalization
 
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
@@ -311,7 +308,7 @@ CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
     - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
 3. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not chain this command to the previous ones, run separately.
 
-## Post review
+### Post review
 
 - Once the review is finished and the review report is finalized, it is READ-ONLY - do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.

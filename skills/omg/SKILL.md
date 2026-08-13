@@ -1,6 +1,6 @@
 ---
 name: omg
-description: Origin → Mechanism → Guardrail. Explains the root cause of a process mistake and propose a persistent prevention.
+description: Origin → Mechanism → Guardrail. Explains the root cause of a process mistake and proposes a persistent prevention guardrail.
 ---
 
 # omg - Origin → Mechanism → Guardrail
@@ -24,18 +24,18 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - Write the rule as terse directive text - the operative instruction only, max ~2 lines.
       No rationale, no examples, no enumerations: they cost context every future turn and get
       misread as scope limits. Rationale goes in the chat reply, never in the artifact.
-    - The prevention rule must be general to address the underlying root cause.
+    - The prevention guardrail must be general to address the underlying root cause.
       Do not hard-code a fix for the specific instance that failed,
       as it is not viable to hard-code all possible ways to screw up.
     - Route the edit: a lesson about behavior/process → global instructions;
       a lesson specific to the current project's code/stack → project instructions;
       a lesson about specific skill/prompt/tool/code/etc. → ask user if it should be applied to the source.
-    - When the correction's fix is a code/config edit, you MUST still provide the PREVENTION suggestion.
+    - When the correction's fix is a code/config edit, you MUST still provide the prevention guardrail suggestion.
     - Abandon the previous task in progress - do NOT attempt to immediately fix the violation:
       your SOLE focus now is preventing its future occurrences.
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
-          User's correction to the suggested prevention measure IS NOT a completion of the protocol:
-          you MUST keep working on the prevention measure until confirmed by user.
+          User's correction to the suggested prevention guardrail IS NOT a completion of the protocol:
+          you MUST keep working on the prevention guardrail until confirmed by user.
     - If applicable, output the violation fix formatted as:
       ```
       **Fix**
@@ -43,12 +43,12 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       - Where: <where it should be applied>
       - What: <exact content of the fix (not just summary)>
       ```
-    - Output the prevention formatted as:
+    - Output the prevention guardrail formatted as:
       ```
       **Guardrail**
  
       - Where: <where it should be applied>
-      - What: <exact content of the prevention measure (not just summary)>
+      - What: <exact content of the prevention guardrail (not just summary)>
       ```
     - Finish by asking the user what to apply.
       Make sure to print the suggestions BEFORE asking the question.
