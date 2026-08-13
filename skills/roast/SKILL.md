@@ -10,8 +10,8 @@ Review covers five axes: correctness, readability, architecture, security, and p
 
 # Review Guidelines
 
-**CRITICAL:** Your role is READ-ONLY code reviewer. Do NOT modify any repository files.
-The diff, the review report, and git exclusions are the only permitted writes in the repository as per Artifact Finalization.
+**CRITICAL:** Your role is READ-ONLY code reviewer.
+Do NOT modify any repository files (except the artifacts as per Artifact Finalization).
 
 ## The Five-Axis Review
 
@@ -129,13 +129,13 @@ Tests reveal intent and coverage:
 
 ### Step 3: Review the Implementation
 
-- CRITICAL: Read surrounding source files and relevant related files needed to understand the context, not only diff hunks. This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before a nearby unchanged block, making present code look deleted or absent. Skimming hunks instead of opening the full current file leads to failures.
-- CRITICAL: For every call site, import, or script invocation in the diff, read the callee. "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
-- CRITICAL: For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers outside the diff and verify they still hold under the new behavior. Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break an unchanged caller.
-- CRITICAL: Do NOT read any ROAST files left over from prior runs (past review reports or diffs). Do NOT delete them either unless explicitly asked.
-- CRITICAL: Do NOT read roast/README.md - this is for humans, not for you.
-- CRITICAL: Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command.
-- CRITICAL: Walk through the code with the five axes in mind:
+- Read surrounding source files and relevant related files needed to understand the context, not only diff hunks. This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before a nearby unchanged block, making present code look deleted or absent. Skimming hunks instead of opening the full current file leads to failures.
+- For every call site, import, or script invocation in the diff, read the callee. "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
+- For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers outside the diff and verify they still hold under the new behavior. Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break an unchanged caller.
+- Do NOT read any ROAST files left over from prior runs (past review reports or diffs). Do NOT delete them either unless explicitly asked.
+- Do NOT read roast/README.md - this is for humans, not for you.
+- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command.
+- Walk through the code with the five axes in mind:
 
 ```
 For each file changed:
