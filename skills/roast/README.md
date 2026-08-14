@@ -2,6 +2,7 @@
 
 Runs a thorough, merciless multi-axis code review on the current branch against the default remote branch
 or a specified base branch, tag, or commit.
+Branch names prefer the remote copy (e.g. `dev` → `origin/dev`); the chosen base is printed before the review starts.
 
 Generates a code review report as `ROAST-yyyyMMdd-HHmmss-*.md` in the current directory
 and excludes it from Git tracking.

@@ -50,7 +50,7 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       ```
     - Finish by asking the user what to apply.
       Make sure to print the suggestions BEFORE asking the question.
-      Use the `ask_user` tool if available, otherwise ask plainly.
+      Use a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`), otherwise ask plainly.
       Offer these options where relevant, reworded as needed, plus any other options that fit:
         - Apply the suggested guardrail.
         - Apply the fix to the violation.
