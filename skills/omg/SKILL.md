@@ -39,21 +39,19 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - If applicable, output the violation fix formatted as:
       ```
       **Fix**
- 
       - Where: <where it should be applied>
       - What: <exact content of the fix (not just summary)>
       ```
     - Output the prevention guardrail formatted as:
       ```
       **Guardrail**
- 
       - Where: <where it should be applied>
       - What: <exact content of the prevention guardrail (not just summary)>
       ```
     - Finish by asking the user what to apply.
       Make sure to print the suggestions BEFORE asking the question.
       Use the `ask_user` tool if available, otherwise ask plainly.
-      Include at least these options, reworded as fits, plus any others that apply:
+      Offer these options where relevant, reworded as needed, plus any other options that fit:
         - Apply the suggested guardrail.
         - Apply the fix to the violation.
         - Apply both.
