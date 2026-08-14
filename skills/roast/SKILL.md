@@ -284,7 +284,7 @@ All commands run in CWD - never change directory.
 3. Determine `BASE_REF`:
    a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>` if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
    b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
-   c. Else if current branch is anything else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
+   c. Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
    Print the resolved `BASE_REF` with the date and subject of its commit (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
 4. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 5. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
