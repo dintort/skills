@@ -38,15 +38,15 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 > **⚠️ Size matters:**
 > **If your agent literally roasted your code instead of doing the multi-axis code review,
 > it is a sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
-> 
+>
 > Use a large-context model and/or narrow the diff.
-> 
+>
 > The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
 > (a split review couldn't catch interactions between separately reviewed files).
-> 
+>
 > Once the context window overflows, earlier instructions get silently evicted
 > and the review degrades without saying so.
-> 
+>
 > The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
 > the actual capacity depends on your particular model's context window size.
 
@@ -77,11 +77,15 @@ To specify a different base, use keywords "vs", "against", "compare", or "base":
 
 ## ⚠️ DISCLAIMER
 
-- AI-generated review. It is not meant to replace human code review, but it might provide some useful insight. Take it with a grain of salt.
+- AI-generated review. It is not meant to replace human code review, but it might provide some useful insight.
+  Take it with a grain of salt.
 - Use AI review in addition to human review, not instead of it.
 - The author is fully responsible for the code regardless if it was generated and/or reviewed with AI.
-- This code review prompt is very aggressive and produces some false-positives: do not take it as an ultimate directive to act upon - use your own critical judgment.
+- This code review prompt is very aggressive and produces some false-positives:
+  do not take it as an ultimate directive to act upon - use your own critical judgment.
 
 ## Attribution
 
-- Based on Addy Osmani's [code-review-and-quality skill](https://github.com/addyosmani/agent-skills/blob/main/skills/code-review-and-quality/SKILL.md) and [code-reviewer agent](https://github.com/addyosmani/agent-skills/blob/main/agents/code-reviewer.md).
+- Based on Addy Osmani's
+  [code-review-and-quality skill](https://github.com/addyosmani/agent-skills/blob/main/skills/code-review-and-quality/SKILL.md)
+  and [code-reviewer agent](https://github.com/addyosmani/agent-skills/blob/main/agents/code-reviewer.md).
