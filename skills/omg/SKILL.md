@@ -39,12 +39,14 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - If applicable, output the violation fix formatted as:
       ```
       **Fix**
+
       - Where: <where it should be applied>
       - What: <exact content of the fix (not just summary)>
       ```
     - Output the prevention guardrail formatted as:
       ```
       **Guardrail**
+
       - Where: <where it should be applied>
       - What: <exact content of the prevention guardrail (not just summary)>
       ```
