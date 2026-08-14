@@ -50,7 +50,8 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 > The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
 > the actual capacity depends on your particular model's context window size.
 
-In an agent chat choose a smart model with large context window (e.g. Sonnet with 1M) and invoke:
+In an agent chat choose a smart model (e.g. at least Sonnet-class, or better yet Opus-class, which is stronger
+at finding tricky issues) and invoke:
 
 ```
 /roast
@@ -80,6 +81,7 @@ To specify a different base, use keywords "vs", "against", "compare", or "base":
 - AI-generated review. It is not meant to replace human code review, but it might provide some useful insight.
   Take it with a grain of salt.
 - Use AI review in addition to human review, not instead of it.
+- The AI review is inherently limited to the project scope and files related to the change diff - so it cannot possibly detect how these changes interact with changes outside the project.
 - The author is fully responsible for the code regardless if it was generated and/or reviewed with AI.
 - This code review prompt is very aggressive and produces some false-positives:
   do not take it as an ultimate directive to act upon - use your own critical judgment.
