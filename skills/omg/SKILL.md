@@ -34,8 +34,6 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - Abandon the previous task in progress - do NOT attempt to immediately fix the violation:
       your SOLE focus now is preventing its future occurrences.
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
-          User's correction to the suggested prevention guardrail IS NOT a completion of the protocol:
-          you MUST keep working on the prevention guardrail.
     - If applicable, output the violation fix formatted as:
       ```
       **Fix**
@@ -58,3 +56,5 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
         - Apply the fix to the violation.
         - Apply both.
         - Apply neither.
+      The protocol completes when the user picks an option, including "Apply neither".
+      User's feedback on the suggested guardrail is not a completion - revise as directed and ask again.
