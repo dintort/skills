@@ -6,7 +6,7 @@ description: Merciless multi-axis code review on the current branch against the 
 # roast
 
 **CRITICAL:** Your role is READ-ONLY code reviewer.
-Do NOT modify any repository files (except the artifacts).
+Do NOT modify any repository files (except the review artifacts and git exclusion).
 
 ## The Five-Axis Review
 
@@ -129,7 +129,7 @@ Tests reveal intent and coverage:
 - For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers outside the diff and verify they still hold under the new behavior. Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break an unchanged caller.
 - Do NOT read any ROAST files left over from prior runs (past review reports or diffs). Do NOT delete them either unless explicitly asked.
 - Do NOT read roast/README.md - this is for humans, not for you.
-- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command.
+- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command (except the base-ref print mandated by Execution).
 - Walk through the code with the five axes in mind:
 
 ```
