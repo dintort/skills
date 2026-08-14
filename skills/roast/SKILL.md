@@ -277,21 +277,24 @@ Part of code review is dependency review:
 
 All commands run in CWD - never change directory.
 
-1. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline), flag it and continue with local refs only.
-2. Determine `BASE_REF`:
+1. Exclude the artifacts from git BEFORE any of them is created: check if git exclusions already contain `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
+    - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
+    - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
+2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline), flag it and continue with local refs only.
+3. Determine `BASE_REF`:
    a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>` if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
    b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
    c. Else if current branch is anything else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
    Print the resolved `BASE_REF` with the date and subject of its commit (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
-3. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
-4. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
-5. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
-6. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
+4. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
+5. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
+6. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
+7. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
-7. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
-8. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
+8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
+9. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 
 ### Coverage Check
@@ -304,11 +307,7 @@ every change must be accounted for, including documentation, config, and fixture
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
 1. Ensure the report file is complete - every finding accounted for.
-2. Check if git exclusions already contains `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
-    - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
-    - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
-3. Un-track artifacts from git in case the IDE automatically staged them - use `git rm --cached --ignore-unmatch` for the diff file and the report file. Do not chain this command to the previous ones, run separately.
-4. Print the absolute path of the report file as the final chat output.
+2. Print the absolute path of the report file as the final chat output.
 
 ### Post review
 
