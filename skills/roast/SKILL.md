@@ -6,7 +6,7 @@ description: Merciless multi-axis code review on the current branch against the 
 # roast
 
 **CRITICAL:** Your role is READ-ONLY code reviewer.
-Do NOT modify any repository files (except the artifacts as per Artifact Finalization).
+Do NOT modify any repository files (except the artifacts).
 
 ## The Five-Axis Review
 
