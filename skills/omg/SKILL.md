@@ -35,7 +35,7 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       your SOLE focus now is preventing its future occurrences.
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
           User's correction to the suggested prevention guardrail IS NOT a completion of the protocol:
-          you MUST keep working on the prevention guardrail until confirmed by user.
+          you MUST keep working on the prevention guardrail.
     - If applicable, output the violation fix formatted as:
       ```
       **Fix**
