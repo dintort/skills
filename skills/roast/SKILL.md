@@ -295,8 +295,14 @@ All commands run in CWD - never change directory.
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
 8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
+   Print its absolute path to chat immediately as `TOKEN: <absolute path>`.
 9. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
+10. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
+
+    `[pending] final output = the token; if unrecallable, warn instead with a warning emoji that context was truncated, the report is unreliable, and the review must be re-run narrower and/or with bigger model.`
+
+    CRITICAL: NEVER include the token, or any hint of what kind of value it is, in this reminder.
 
 ### Coverage Check
 
@@ -308,7 +314,7 @@ every change must be accounted for, including documentation, config, and fixture
 CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 
 1. Ensure the report file is complete - every finding accounted for.
-2. Print the absolute path of the report file as the final chat output.
+2. Execute the pending line as the final chat output.
 
 ## Post review
 
