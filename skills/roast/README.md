@@ -41,7 +41,7 @@ Or simply copy the `roast` directory to your agents' skills at `~/.agents/skills
 > The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
 > the actual capacity depends on your particular model's context window size.
 >
-> **️ A broken review might still look like a review:** check the report for these before trusting it:
+> ** A broken review might still look like a review:** check the report for these before trusting it:
 >
 > - findings are titled `Issue #N:`
 > - every finding has Severity, Confidence, Files, Description and How to Fix

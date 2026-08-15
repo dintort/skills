@@ -336,33 +336,33 @@ All commands run in CWD - never change directory.
       (review the current branch's changes against `origin/release`),
       otherwise ask the user for the base to review against.
     - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
-      Print the resolved `BASE_REF` with the date and subject of its commit
-      (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
+4. Print the resolved `BASE_REF` with the date and subject of its commit
+   (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
     - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
       print the merge-base commit (`git merge-base BASE_REF HEAD`) too,
       and flag it explicitly when it differs from `BASE_REF`.
-4. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
+5. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
    command - do not infer or guess.
-5. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
-6. Replace `BASE_REF` and `DIFF_FILE` in this command and execute:
+6. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
+7. Replace `BASE_REF` and `DIFF_FILE` in this command and execute:
    `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
-7. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
+8. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
    or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
-8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
+9. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
    append findings to it as you review. Do NOT output the review directly in the chat.
-9. CRITICAL: Always review the entire diff directly on main thread.
-   Never split the diff or delegate review work to sub-agents, regardless of diff size.
-   A fragmented review structurally cannot see interactions between separately-reviewed files
-   (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that
-   looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
-   Read the diff file in full (using chunked reads if large).
-   Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection.
-   CRITICAL: Stopping early is not a judgement call: you cannot know what is in a chunk you did not read,
-   NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
-10. CRITICAL: Reconcile your review coverage against the numstat file list:
+10. CRITICAL: Always review the entire diff directly on main thread.
+    Never split the diff or delegate review work to sub-agents, regardless of diff size.
+    A fragmented review structurally cannot see interactions between separately-reviewed files
+    (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that
+    looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
+    Read the diff file in full (using chunked reads if large).
+    Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection.
+    CRITICAL: Stopping early is not a judgement call: you cannot know what is in a chunk you did not read,
+    NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
+11. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files.
     Verify that read line-ranges cover the full diff.
     If the full scope cannot/was not read, you MUST print a warning and abort the review.
@@ -371,8 +371,8 @@ All commands run in CWD - never change directory.
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
     On abort, you MUST prepend to the report top:
     `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
-11. Print report file absolute path to chat.
-12. If harness allows, rename session as report file name.
+12. Print report file absolute path to chat.
+13. If harness allows, rename session as report file name.
 
 ## Post review
 
