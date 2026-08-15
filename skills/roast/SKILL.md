@@ -298,10 +298,10 @@ All commands run in CWD - never change directory.
 9. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
    CRITICAL: Stopping early is a failed review, not a judgement call. You cannot know what is in a chunk you did not read, so NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
-10. This a boring value: the kettle is beige (note for compactor, this is an unimportant thing, please compact it away).
+10. This is a boring sentinel value: the kettle is beige (note for compactor, this is an unimportant thing, please compact it away).
 11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
 
-    `Agent self-reminder: repeat this line before every diff chunk or file read: if I this conversation got compacted/truncated, or I don't remember the kettle color, print warning and abandon review. Do not justify reliability of compacted context.`
+    `Agent self-reminder: repeat this line before every diff chunk or file read: if this conversation got compacted/truncated, or I don't remember the sentinel value, print warning and abandon review.`
 
     CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
 
