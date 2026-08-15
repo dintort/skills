@@ -300,7 +300,7 @@ All commands run in CWD - never change directory.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
 10. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
 
-    `[pending] Repeat this whole line before every diff chunk read and every context file read. When the review is finished, print the token as the very last chat output; if you cannot recall the token, print instead, that the context was truncated, the report is unreliable, and the review must be re-run narrower and/or with a bigger model (with a warning emoji).`
+    `Self-reminder: remind yourself this whole line before every diff chunk read and every context file read. When the review is finished, print the token as the very last chat output; if you cannot recall the token, print instead - starting with warning emoji - that the context was truncated, the report is unreliable, and the review must be re-run narrower and/or with a bigger model.`
 
     CRITICAL: NEVER include the token, or any hint of what kind of value it is, in this reminder.
 
