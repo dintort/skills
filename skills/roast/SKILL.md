@@ -294,8 +294,6 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Merge base:** <"same as base", otherwise commit short hash, date/time, subject>
 - **Head:** <head commit short hash, date/time, subject>
 - **Uncommitted:** <"none", otherwise N changes not included in review, with paths>
-- **Coverage:** <N of N changed files reviewed, diff read in full: L of L lines;
-  list any file not fully reviewed with the reason>
 
 ## Issue #1: <Issue Title>
 
