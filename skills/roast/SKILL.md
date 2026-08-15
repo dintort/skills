@@ -302,16 +302,13 @@ All commands run in CWD - never change directory.
 11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
     `Agent self-reminder: repeat and obey this line before every diff chunk or file read: print the sentinel value as last output of the turn. If conversation got compacted/truncated, or can't recall sentinel value: print warning and abort review.`
     CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
-12. CRITICAL: Before finalizing, reconcile your review against the numstat file list:
+12. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files. 
-13. CRITICAL: Log each chunk's line range as you read it (grepped/targeted reads don't count toward coverage).
-    Sum the ranges vs `wc -l < DIFF_FILE` and print `N/TOTAL lines read`.
-    Verify that read line-ranges cover the full diff, otherwise print a warning and abort review.
-    NEVER claim success based in incomplete scope read.
+    Verify that read line-ranges cover the full diff.
+    If the full scope cannot/was not read, you MUST print a warning and abort the review.
+    Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
-    it hands the user a false guarantee of coverage, so bugs in the unread portion ship unreviewed.
-    If you cannot read the full scope, you MUST abort the review.
-    NO exceptions, NO shortcuts, NO faking, NO "best effort".
+    it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
 
 ## Post review
 
