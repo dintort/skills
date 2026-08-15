@@ -293,7 +293,8 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 ```markdown
 # <Change Title>
 
-- **Base:** <BASE_REF> - <base commit date and subject>
+- **Base:** <BASE_REF commit short hash, date/time, subject>
+- **Merge base:** <"same as base", otherwise commit short hash, date/time, subject>
 
 ## Issue #1: <Issue Title>
 
@@ -336,11 +337,12 @@ All commands run in CWD - never change directory.
       (review the current branch's changes against `origin/release`),
       otherwise ask the user for the base to review against.
     - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
-4. Print the resolved `BASE_REF` with the date and subject of its commit
-   (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
+4. Print the resolved `BASE_REF` and the merge base to chat, both in the same format -
+   short hash, date and time, subject:
+   `git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' BASE_REF` and the same command
+   on `$(git merge-base BASE_REF HEAD)`.
     - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
-      print the merge-base commit (`git merge-base BASE_REF HEAD`) too,
-      and flag it explicitly when it differs from `BASE_REF`.
+      flag it explicitly when the merge base differs from `BASE_REF`.
 5. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
    command - do not infer or guess.
 6. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
