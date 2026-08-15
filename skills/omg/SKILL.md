@@ -35,14 +35,14 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       your SOLE focus now is preventing its future occurrences.
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
     - If applicable, output the violation fix formatted as:
-      ```
+      ```markdown
       **Fix**
 
       - Where: <where it should be applied>
       - What: <content of the fix (summarized if long)>
       ```
     - Output the prevention guardrail formatted as:
-      ```
+      ```markdown
       **Guardrail**
 
       - Where: <where it should be applied>

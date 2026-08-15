@@ -332,16 +332,18 @@ All commands run in CWD - never change directory.
       `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || printf '\n%s\n' 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
     - PowerShell:
       `$ExcludeFile = Join-Path (git rev-parse --git-common-dir) "info/exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$").Line`
-2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline),
+2. Sync all remotes: execute `git fetch --all`. If it fails (no remote configured, or offline),
    flag it and continue with local refs only.
-3. Determine BASE_REF:
-    - If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>`
-      if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
-    - Else if current branch IS the default branch → use `origin/release` if it exists
-      (review the current branch's changes against `origin/release`),
+3. Determine REMOTE: `origin` if it exists, else the only remote from `git remote`;
+   if several exist and none is `origin`, ask the user which one to use.
+4. Determine BASE_REF:
+    - If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `REMOTE/<ref>`
+      if `git rev-parse --verify -q REMOTE/<ref>` resolves, otherwise the ref verbatim.
+    - Else if current branch IS the default branch → use `REMOTE/release` if it exists
+      (review the current branch's changes against `REMOTE/release`),
       otherwise ask the user for the base to review against.
     - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
-4. Determine MERGE_BASE (replace BASE_REF): `git merge-base BASE_REF HEAD`.
+5. Determine MERGE_BASE (replace BASE_REF): `git merge-base BASE_REF HEAD`.
    Resolve BASE_REF/MERGE_BASE/HEAD (replace BASE_REF and MERGE_BASE):
    ```
    git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' BASE_REF
@@ -351,22 +353,22 @@ All commands run in CWD - never change directory.
     - Print the resolved BASE_REF/MERGE_BASE/HEAD to chat - all in the same format - short hash, date and time, subject.
     - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
       flag it explicitly when the merge base differs from `BASE_REF`.
-5. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
+6. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
    command - do not infer or guess.
-6. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
-7. Replace `BASE_REF` and `DIFF_FILE` in this command and execute:
+7. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
+8. Replace `BASE_REF` and `DIFF_FILE` in this command and execute:
    `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
-8. Check the working tree: execute `git status --porcelain`.
+9. Check the working tree: execute `git status --porcelain`.
    If it is non-empty, print `⚠️ <N> uncommitted change(s) not included in this review` with paths.
    Continue review regardless.
-9. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
-   or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
-   then print a warning right away, before reading the full diff:
-   `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
-   Then continue the review regardless.
-10. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
+10. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
+    or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
+    then print a warning right away, before reading the full diff:
+    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
+    Then continue the review regardless.
+11. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
     append findings to it as you review. Do NOT output the review directly in the chat.
-11. CRITICAL: Always review the entire diff directly on main thread.
+12. CRITICAL: Always review the entire diff directly on main thread.
     Never split the diff or delegate review work to sub-agents, regardless of diff size.
     A fragmented review structurally cannot see interactions between separately-reviewed files
     (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that
@@ -375,17 +377,14 @@ All commands run in CWD - never change directory.
     Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection.
     CRITICAL: Stopping early is not a judgement call: you cannot know what is in a chunk you did not read,
     NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
-12. CRITICAL: Reconcile your review coverage against the numstat file list:
+13. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files.
     Verify that read line-ranges cover the full diff.
-    Record the outcome in the report's `**Coverage:**` header field - counts, not prose.
     If the full scope cannot/was not read, you MUST print a warning and abort the review.
     Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
-    On abort, you MUST prepend to the report top:
-    `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
-13. Print report file absolute path to chat.
+14. Print report file absolute path to chat.
 
 ## Post review
 
