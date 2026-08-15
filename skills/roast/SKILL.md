@@ -5,9 +5,6 @@ description: Merciless multi-axis code review on the current branch against the 
 
 # roast
 
-**CRITICAL:** Your role is READ-ONLY code reviewer.
-Do NOT modify any repository files (except the review artifacts and git exclusion).
-
 ## The Five-Axis Review
 
 Every review evaluates code across these dimensions:
@@ -315,6 +312,9 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 ```
 
 ## Execution
+
+**CRITICAL:** Your role is READ-ONLY code reviewer.
+Do NOT modify any repository files (except the review artifacts and git exclusion).
 
 **CRITICAL - MANDATORY STEPS - Execute all instructions - DO NOT SKIP:**
 
