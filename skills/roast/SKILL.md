@@ -129,7 +129,7 @@ Tests reveal intent and coverage:
 - For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers outside the diff and verify they still hold under the new behavior. Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break an unchanged caller.
 - Do NOT read any ROAST files left over from prior runs (past review reports or diffs). Do NOT delete them either unless explicitly asked.
 - Do NOT read roast/README.md - this is for humans, not for you.
-- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command (except the base-ref print mandated by Execution).
+- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command (except the base-ref and merge-base prints mandated by Execution).
 - Walk through the code with the five axes in mind:
 
 ```
@@ -286,6 +286,7 @@ All commands run in CWD - never change directory.
    b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
    c. Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
    Print the resolved `BASE_REF` with the date and subject of its commit (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
+   The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`: print the merge-base commit (`git merge-base BASE_REF HEAD`) too, and flag it explicitly when it differs from `BASE_REF`.
 4. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
 5. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
 6. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
@@ -309,7 +310,7 @@ CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
 1. Ensure the report file is complete - every finding accounted for.
 2. Print the absolute path of the report file as the final chat output.
 
-### Post review
+## Post review
 
 - Once the review is finished and the review report is finalized, it is READ-ONLY - do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.

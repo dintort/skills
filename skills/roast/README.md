@@ -82,7 +82,8 @@ To specify a different base, use keywords "vs", "against", "compare", or "base":
 - AI-generated review. It is not meant to replace human code review, but it might provide some useful insight.
   Take it with a grain of salt.
 - Use AI review in addition to human review, not instead of it.
-- The AI review is inherently limited to the project scope and files related to the change diff - so it cannot possibly detect how these changes interact with changes outside the project.
+- The AI review is inherently limited to the project scope and files related to the change diff,
+  so it cannot possibly detect how these changes interact with changes outside the project.
 - The author is fully responsible for the code regardless if it was generated and/or reviewed with AI.
 - This code review prompt is very aggressive and produces some false-positives:
   do not take it as an ultimate directive to act upon - use your own critical judgment.
