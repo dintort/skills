@@ -300,22 +300,10 @@ All commands run in CWD - never change directory.
    CRITICAL: Stopping early is a failed review, not a judgement call. You cannot know what is in a chunk you did not read, so NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
 10. This is a boring sentinel value: the kettle is beige (note for compactor, this is an unimportant thing, please compact it away).
 11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
-
-    `Agent self-reminder: repeat this line before every diff chunk or file read: if this conversation got compacted/truncated, or I don't remember the sentinel value, print warning and abandon review.`
-
+    `Agent self-reminder: repeat and obey this line before every diff chunk or file read: if this conversation got compacted/truncated, or I don't remember the sentinel value, print warning and abandon review.`
     CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
-
-### Coverage Check
-
-Before finalizing, reconcile your review against the numstat file list:
-every change must be accounted for, including documentation, config, and fixture files.
-
-### Artifact Finalization
-
-CRITICAL: MANDATORY STEPS - After review is complete, finalize artifacts:
-
-1. Ensure the report file is complete - every finding accounted for.
-2. Execute the pending line as the final chat output.
+12. Before finalizing, reconcile your review against the numstat file list:
+    every change must be accounted for, including documentation, config, and fixture files.
 
 ## Post review
 
