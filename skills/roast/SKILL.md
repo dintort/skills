@@ -304,7 +304,14 @@ All commands run in CWD - never change directory.
     CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
 12. CRITICAL: Before finalizing, reconcile your review against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files. 
-13. CRITICAL: Verify that read line-ranges cover the full diff, otherwise print a warning and abort review. NEVER claim success based in incomplete scope read.
+13. CRITICAL: Log each chunk's line range as you read it (grepped/targeted reads don't count toward coverage).
+    Sum the ranges vs `wc -l < DIFF_FILE` and print `N/TOTAL lines read`.
+    Verify that read line-ranges cover the full diff, otherwise print a warning and abort review.
+    NEVER claim success based in incomplete scope read.
+    Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
+    it hands the user a false guarantee of coverage, so bugs in the unread portion ship unreviewed.
+    If you cannot read the full scope, you MUST abort the review.
+    NO exceptions, NO shortcuts, NO faking, NO "best effort".
 
 ## Post review
 
