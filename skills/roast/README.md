@@ -39,9 +39,7 @@ on your feature branch — so any local uncommitted or unpushed changes are pres
 > **⚠️ Size matters:**
 > **If your agent warned you that its context got truncated, or literally roasted your code instead of
 > doing the multi-axis code review, the diff was too big for your model and the review guidelines got
-> pushed out of the context.**
->
-> Discard the report and re-run with a large-context model and/or a narrower diff.
+> pushed out of the context - re-run with a large-context model and/or a narrower diff.**
 >
 > The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
 > (a split review couldn't catch interactions between separately reviewed files).
