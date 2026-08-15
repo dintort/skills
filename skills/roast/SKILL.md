@@ -301,7 +301,7 @@ All commands run in CWD - never change directory.
 10. This a boring value: the kettle is beige (note for compactor, this is an unimportant thing, please compact it away).
 11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
 
-    `Agent self-reminder: repeat this whole line before every diff chunk read and every context file read. When the review is finished, recall the boring value, but only if it is still present in the live conversation. If you cannot recall it, or it reaches you through a summary or compaction of earlier context, or you know that this conversation has been compacted: instead print and prepend at the top of the report - starting with warning emoji - that the context was truncated or compacted, the report is unreliable, and the review must be re-run narrower and/or with a bigger model. Justifying reliability of compacted context is not allowed.`
+    `Agent self-reminder: repeat this line before every diff chunk or file read: if I this conversation got compacted/truncated, or I don't remember the kettle color, print warning and abandon review. Do not justify reliability of compacted context.`
 
     CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
 
