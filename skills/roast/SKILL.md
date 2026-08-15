@@ -321,11 +321,12 @@ All commands run in CWD - never change directory.
 
 1. Exclude the artifacts from git BEFORE any of them is created:
    check if git exclusions already contain `ROAST-*` and if not, append it.
-   The trailing check MUST print `ROAST-*` - no output means the step failed:
+   The trailing check MUST print `ROAST-*` - no output means the step failed,
+   stop and report it, do NOT create any artifacts.
     - bash:
-      `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
+      `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || printf '\n%s\n' 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
     - PowerShell:
-      `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
+      `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
 2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline),
    flag it and continue with local refs only.
 3. Determine `BASE_REF`:
@@ -370,6 +371,7 @@ All commands run in CWD - never change directory.
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
     On abort, you MUST prepend to the report top:
     `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
+11. Print report file absolute path to chat.
 
 ## Post review
 
