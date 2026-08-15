@@ -37,8 +37,10 @@ Can another engineer (or agent) understand this code without explanation
 - **Are abstractions earning their complexity?** (Don't generalize until the third use case)
 - Would comments help clarify non-obvious intent? (But don't comment obvious code.)
 - Are there dead code artifacts: no-op variables (`_unused`), backwards-compat shims, or `// removed` comments?
-- **Is a new conditional bolted onto an unrelated flow?** That's a design smell, not a nit — push the logic into its own helper, state, or policy instead of tangling an existing path.
-- **Do repeated conditionals on the same shape appear?** They signal a missing model or dispatcher. A "temporary" branch is usually permanent debt.
+- **Is a new conditional bolted onto an unrelated flow?** That's a design smell, not a nit — push the logic into its own
+  helper, state, or policy instead of tangling an existing path.
+- **Do repeated conditionals on the same shape appear?** They signal a missing model or dispatcher. A "temporary" branch
+  is usually permanent debt.
 - Suggest concrete improvements for readability, maintainability, naming, and refactoring.
 
 ### 3. Architecture
@@ -50,9 +52,14 @@ Does the change fit the system's design?
 - Is there code duplication that should be shared?
 - Are dependencies flowing in the right direction (no circular dependencies)?
 - Is the abstraction level appropriate (not over-engineered, not too coupled)?
-- **Does this refactor reduce complexity or just relocate it?** Count the concepts a reader must hold to follow the change. If a "cleaner" version leaves that count unchanged, it isn't cleaner — prefer the restructuring that makes whole branches, modes, or layers disappear over one that re-centralizes the same logic. Prefer deleting an abstraction to polishing it.
-- **Is feature-specific logic leaking into a shared or general-purpose module?** Keep logic in its owning layer, reuse the existing canonical helper instead of a near-duplicate, and don't normalize architectural drift.
-- **Are type boundaries explicit?** Question gratuitous `any`/`unknown`/optional/casts and silent fallbacks that paper over an unclear invariant — making the boundary explicit often makes the surrounding control flow simpler.
+- **Does this refactor reduce complexity or just relocate it?** Count the concepts a reader must hold to follow the
+  change. If a "cleaner" version leaves that count unchanged, it isn't cleaner — prefer the restructuring that makes
+  whole branches, modes, or layers disappear over one that re-centralizes the same logic. Prefer deleting an abstraction
+  to polishing it.
+- **Is feature-specific logic leaking into a shared or general-purpose module?** Keep logic in its owning layer, reuse
+  the existing canonical helper instead of a near-duplicate, and don't normalize architectural drift.
+- **Are type boundaries explicit?** Question gratuitous `any`/`unknown`/optional/casts and silent fallbacks that paper
+  over an unclear invariant — making the boundary explicit often makes the surrounding control flow simpler.
 
 ### 4. Security
 
@@ -85,7 +92,9 @@ Does the change fit the system's design?
 
 ## Structural Remedies
 
-When you flag a structural problem, propose the move — not just the problem. A review that only says "this is complex" leaves the author guessing. Reach for a named restructuring:
+When you flag a structural problem, propose the move — not just the problem.
+A review that only says "this is complex" leaves the author guessing.
+Reach for a named restructuring:
 
 - **Replace a chain of conditionals** with a typed model or an explicit dispatcher.
 - **Collapse duplicate branches** into a single clearer flow.
@@ -124,12 +133,21 @@ Tests reveal intent and coverage:
 
 ### Step 3: Review the Implementation
 
-- Read surrounding source files and relevant related files needed to understand the context, not only diff hunks. This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before a nearby unchanged block, making present code look deleted or absent. Skimming hunks instead of opening the full current file leads to failures.
-- For every call site, import, or script invocation in the diff, read the callee. "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
-- For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers outside the diff and verify they still hold under the new behavior. Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break an unchanged caller.
-- Do NOT read any ROAST files left over from prior runs (past review reports or diffs). Do NOT delete them either unless explicitly asked.
+- Read surrounding source files and relevant related files needed to understand the context, not only diff hunks.
+  This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before
+  a nearby unchanged block, making present code look deleted or absent.
+  Skimming hunks instead of opening the full current file leads to failures.
+- For every call site, import, or script invocation in the diff, read the callee.
+  "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
+- For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers
+  outside the diff and verify they still hold under the new behavior.
+  Do not assume every consumer is already reflected in the diff — a compatible-looking change can silently break
+  an unchanged caller.
+- Do NOT read any ROAST files left over from prior runs (past review reports or diffs).
+  Do NOT delete them either unless explicitly asked.
 - Do NOT read roast/README.md - this is for humans, not for you.
-- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other history command (except the base-ref and merge-base prints mandated by Execution).
+- Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other
+  history command (except the base-ref and merge-base prints mandated by Execution).
 - Walk through the code with the five axes in mind:
 
 ```
@@ -143,13 +161,13 @@ For each file changed:
 
 ## Severity Classification
 
-| Severity                | Meaning           | Author Action                                                         |
-|-------------------------|-------------------|-----------------------------------------------------------------------|
-| **🔥 Critical**         | Blocks merge      | Must address immediately (security, data loss, broken functionality)  |
-| **🔴 High / 🟡 Medium** | Required change   | Must address before merge                                             |
-| **🔵 Low / ⚪ Nit**      | Minor, optional   | Author may ignore — formatting, style preferences                     |
-| **✨ Suggestion**       | Recommendation    | Consider improvement (naming, code style, optional optimization) |
-| **💡 FYI**              | Informational only | No action needed — context for future reference                       |
+| Severity                | Meaning            | Author Action                                                        |
+|-------------------------|--------------------|----------------------------------------------------------------------|
+| **🔥 Critical**         | Blocks merge       | Must address immediately (security, data loss, broken functionality) |
+| **🔴 High / 🟡 Medium** | Required change    | Must address before merge                                            |
+| **🔵 Low / ⚪ Nit**      | Minor, optional    | Author may ignore — formatting, style preferences                    |
+| **✨ Suggestion**        | Recommendation     | Consider improvement (naming, code style, optional optimization)     |
+| **💡 FYI**              | Informational only | No action needed — context for future reference                      |
 
 ## Dead Code Hygiene
 
@@ -166,9 +184,13 @@ When resolving review disputes, apply this hierarchy:
 
 ## Honesty in Review
 
-- **Don't soften real issues.** "This might be a minor concern" when it's a bug that will hit production is dishonest. Be thorough, harsh, and merciless. It is better to surface a finding that later gets filtered out than to silently drop a real bug. Your goal is maximum coverage.
-- **Quantify problems when possible.** "This N+1 query will add ~50ms per item in the list" is better than "this could be slow."
-- **Push back on approaches with clear problems.** Sycophancy is a failure mode in reviews. If the implementation has issues, say so directly and propose alternatives.
+- **Don't soften real issues.** "This might be a minor concern" when it's a bug that will hit production is dishonest.
+  Be thorough, harsh, and merciless. It is better to surface a finding that later gets filtered out than to silently
+  drop a real bug. Your goal is maximum coverage.
+- **Quantify problems when possible.** "This N+1 query will add ~50ms per item in the list" is better
+  than "this could be slow."
+- **Push back on approaches with clear problems.** Sycophancy is a failure mode in reviews.
+  If the implementation has issues, say so directly and propose alternatives.
 - **Don't praise.** Skip compliments on what was done good and focus solely on identifying issues.
 
 ## Dependency Discipline
@@ -176,6 +198,7 @@ When resolving review disputes, apply this hierarchy:
 Part of code review is dependency review:
 
 **Before adding any dependency:**
+
 1. Does the existing stack solve this? (Often it does.)
 2. How large is the dependency? (Check bundle impact.)
 3. Is it actively maintained? (Check last commit, open issues.)
@@ -184,32 +207,44 @@ Part of code review is dependency review:
 
 **Rule:** Prefer standard library and existing utilities over new dependencies. Every dependency is a liability.
 
-**Upgrading an existing dependency** is a code change like any other, and the riskiest upgrades are the ones merged in bulk with a message like "bump deps." Review them with the same discipline:
+**Upgrading an existing dependency** is a code change like any other, and the riskiest upgrades are the ones merged in
+bulk with a message like "bump deps." Review them with the same discipline:
 
-1. **Read the changelog, not just the version number.** Semver is a promise the maintainer may not have kept — a "patch" can carry a behavioral change. For a major bump, read the migration notes and find what breaks.
-2. **One dependency per change.** Upgrade and merge them individually (or in small related groups). When a bulk bump breaks the build, you've lost which package did it; a single-package change makes the cause obvious and the revert clean.
-3. **Let the tests decide.** The upgrade is verified by a green suite before *and* after, not by "it installed." If coverage around the dependency's behavior is thin, that gap is the real finding — add a test first.
-4. **Mind the transitive graph.** Most installed packages are ones nobody chose directly. Review the lockfile diff, not just `package.json`; a single direct bump can pull in dozens of indirect changes.
-5. **Keep the lockfile honest.** Commit it, review its diff, and never hand-edit it. The lockfile is the thing that actually pins what ships.
+1. **Read the changelog, not just the version number.** Semver is a promise the maintainer may not have
+   kept — a "patch" can carry a behavioral change.
+   For a major bump, read the migration notes and find what breaks.
+2. **One dependency per change.** Upgrade and merge them individually (or in small related groups).
+   When a bulk bump breaks the build, you've lost which package did it;
+   a single-package change makes the cause obvious and the revert clean.
+3. **Let the tests decide.** The upgrade is verified by a green suite before *and* after, not by "it installed."
+   If coverage around the dependency's behavior is thin, that gap is the real finding — add a test first.
+4. **Mind the transitive graph.** Most installed packages are ones nobody chose directly.
+   Review the lockfile diff, not just `package.json`; a single direct bump can pull in dozens of indirect changes.
+5. **Keep the lockfile honest.** Commit it, review its diff, and never hand-edit it.
+   The lockfile is the thing that actually pins what ships.
 
 ## The Review Checklist
 
 ```markdown
 ### Context
+
 - [ ] I understand what this change does and why
 
 ### Correctness
+
 - [ ] Change matches spec/task requirements
 - [ ] Edge cases handled
 - [ ] Error paths handled
 - [ ] Tests cover the change adequately
 
 ### Readability
+
 - [ ] Names are clear and consistent
 - [ ] Logic is straightforward
 - [ ] No unnecessary complexity
 
 ### Architecture
+
 - [ ] Follows existing patterns
 - [ ] No unnecessary coupling or dependencies
 - [ ] Appropriate abstraction level
@@ -217,6 +252,7 @@ Part of code review is dependency review:
 - [ ] No feature logic in shared modules; file stays within a healthy size
 
 ### Security
+
 - [ ] No secrets in code
 - [ ] Input validated at boundaries
 - [ ] No injection vulnerabilities
@@ -224,6 +260,7 @@ Part of code review is dependency review:
 - [ ] External data sources treated as untrusted
 
 ### Performance
+
 - [ ] No N+1 patterns
 - [ ] No unbounded operations
 - [ ] Pagination on list endpoints
@@ -240,11 +277,15 @@ Part of code review is dependency review:
 - New conditionals scattered into unrelated code paths (a missing abstraction)
 - A bespoke helper that duplicates an existing canonical one, or feature logic placed in a shared module
 
-**Presumptive blockers:** surface and propose the simpler design for each of these; escalate to Required only when the change actively makes structure worse: a refactor that relocates complexity instead of reducing it; a change that pushes a file past the size boundary with no decomposition; feature logic added to a shared module; a near-duplicate of an existing canonical helper; a silent fallback that hides an unclear invariant.
+**Presumptive blockers:** surface and propose the simpler design for each of these; escalate to Required only when the
+change actively makes structure worse: a refactor that relocates complexity instead of reducing it; a change that pushes
+a file past the size boundary with no decomposition; feature logic added to a shared module; a near-duplicate of an
+existing canonical helper; a silent fallback that hides an unclear invariant.
 
 ## Review Output Template
 
-- Append to the review report as you go, do NOT wait till the end to write the whole report. CRITICAL: Do NOT sort by severity. List issues in the exact chronological order you find them.
+- Append to the review report as you go, do NOT wait till the end to write the whole report.
+  CRITICAL: Do NOT sort by severity. List issues in the exact chronological order you find them.
 - Use the following structured format for each finding.
 - Use headings for issue headers.
 - Use dashes for bullet points within each issue.
@@ -255,6 +296,7 @@ Part of code review is dependency review:
 - **Base:** <BASE_REF> - <base commit date and subject>
 
 ## Issue #1: <Issue Title>
+
 - **Severity:** [🔥 Critical / 🔴 High / 🟡 Medium / 🔵 Low / ⚪ Nit / ✨ Suggestion / 💡 FYI ]
 - **Confidence:** [Your confidence level in this finding]
 - **Files:**
@@ -264,8 +306,8 @@ Part of code review is dependency review:
 - **Description:** [Description of the issue]
 - **How to Fix:** [Specific fix recommendation]
 
-
 ## Issue #2: <Issue Title>
+
 ...
 
 
@@ -277,37 +319,61 @@ Part of code review is dependency review:
 
 All commands run in CWD - never change directory.
 
-1. Exclude the artifacts from git BEFORE any of them is created: check if git exclusions already contain `ROAST-*` and if not, append it. The trailing check MUST print `ROAST-*` - no output means the step failed:
-    - bash: `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
-    - PowerShell: `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
-2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline), flag it and continue with local refs only.
+1. Exclude the artifacts from git BEFORE any of them is created:
+   check if git exclusions already contain `ROAST-*` and if not, append it.
+   The trailing check MUST print `ROAST-*` - no output means the step failed:
+    - bash:
+      `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || echo 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
+    - PowerShell:
+      `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
+2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline),
+   flag it and continue with local refs only.
 3. Determine `BASE_REF`:
-   a. If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>` if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
-   b. Else if current branch IS the default branch → use `origin/release` if it exists (review the current branch's changes against `origin/release`), otherwise ask the user for the base to review against.
-   c. Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
-   Print the resolved `BASE_REF` with the date and subject of its commit (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
-   The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`: print the merge-base commit (`git merge-base BASE_REF HEAD`) too, and flag it explicitly when it differs from `BASE_REF`.
-4. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell command - do not infer or guess.
+    - If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>`
+      if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
+    - Else if current branch IS the default branch → use `origin/release` if it exists
+      (review the current branch's changes against `origin/release`),
+      otherwise ask the user for the base to review against.
+    - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
+      Print the resolved `BASE_REF` with the date and subject of its commit
+      (`git show -s --format='%ad %s' --date=short BASE_REF`) to chat.
+    - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
+      print the merge-base commit (`git merge-base BASE_REF HEAD`) too,
+      and flag it explicitly when it differs from `BASE_REF`.
+4. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
+   command - do not infer or guess.
 5. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
-6. Replace `BASE_REF` and `DIFF_FILE` in this command and execute: `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
-7. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000, or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
+6. Replace `BASE_REF` and `DIFF_FILE` in this command and execute:
+   `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
+7. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
+   or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
-8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
-9. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
-   Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
-   CRITICAL: Stopping early is not a judgement call. You cannot know what is in a chunk you did not read, so NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
+8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
+   append findings to it as you review. Do NOT output the review directly in the chat.
+9. CRITICAL: Always review the entire diff directly on main thread.
+   Never split the diff or delegate review work to sub-agents, regardless of diff size.
+   A fragmented review structurally cannot see interactions between separately-reviewed files
+   (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that
+   looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
+   Read the diff file in full (using chunked reads if large).
+   Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection.
+   CRITICAL: Stopping early is not a judgement call: you cannot know what is in a chunk you did not read,
+   NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
 10. CRITICAL: Reconcile your review coverage against the numstat file list:
-    every change must be accounted for, including documentation, config, and fixture files. 
+    every change must be accounted for, including documentation, config, and fixture files.
     Verify that read line-ranges cover the full diff.
     If the full scope cannot/was not read, you MUST print a warning and abort the review.
     Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
+    On abort, you MUST prepend to the report top:
+    `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
 
 ## Post review
 
-- Once the review is finished and the review report is finalized, it is READ-ONLY - do NOT update it further in the conversation.
+- Once the review is finished and the review report is finalized, it is READ-ONLY:
+  do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
 - Do not re-list outstanding unfixed items further in conversation (unless requested).
