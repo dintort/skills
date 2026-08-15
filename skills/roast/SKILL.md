@@ -389,7 +389,6 @@ All commands run in CWD - never change directory.
 
 ## Post review
 
-- If harness allows, rename session as report file name.
 - Once the review is finished and the review report is finalized, it is READ-ONLY:
   do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
