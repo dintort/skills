@@ -293,6 +293,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Base:** <BASE_REF commit short hash, date/time, subject>
 - **Merge base:** <"same as base", otherwise commit short hash, date/time, subject>
 - **Head:** <head commit short hash, date/time, subject>
+- **Uncommitted:** <"none", otherwise N changes not included in review, with paths>
 
 ## Issue #1: <Issue Title>
 
@@ -328,7 +329,7 @@ All commands run in CWD - never change directory.
     - bash:
       `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || printf '\n%s\n' 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
     - PowerShell:
-      `$ExcludeFile = "$(git rev-parse --git-common-dir)\info\exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$"`
+      `$ExcludeFile = Join-Path (git rev-parse --git-common-dir) "info/exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$").Line`
 2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline),
    flag it and continue with local refs only.
 3. Determine `BASE_REF`:
@@ -348,14 +349,17 @@ All commands run in CWD - never change directory.
 6. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
 7. Replace `BASE_REF` and `DIFF_FILE` in this command and execute:
    `git --no-pager diff BASE_REF...HEAD --shortstat && git --no-pager diff BASE_REF...HEAD --numstat -p > DIFF_FILE`.
-8. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
+8. Check the working tree: execute `git status --porcelain`.
+   If it is non-empty, print `⚠️ <N> uncommitted change(s) not included in this review` with paths.
+   Continue review regardless.
+9. Check diff size: if the changed line count (insertions + deletions from `--shortstat`) exceeds 5000,
    or `DIFF_FILE`'s byte size exceeds 1MB (bash: `wc -c < DIFF_FILE`, PowerShell: `(Get-Item DIFF_FILE).Length`),
    then print a warning right away, before reading the full diff:
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
-9. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
+10. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
    append findings to it as you review. Do NOT output the review directly in the chat.
-10. CRITICAL: Always review the entire diff directly on main thread.
+11. CRITICAL: Always review the entire diff directly on main thread.
     Never split the diff or delegate review work to sub-agents, regardless of diff size.
     A fragmented review structurally cannot see interactions between separately-reviewed files
     (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that
@@ -364,7 +368,7 @@ All commands run in CWD - never change directory.
     Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection.
     CRITICAL: Stopping early is not a judgement call: you cannot know what is in a chunk you did not read,
     NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
-11. CRITICAL: Reconcile your review coverage against the numstat file list:
+12. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files.
     Verify that read line-ranges cover the full diff.
     If the full scope cannot/was not read, you MUST print a warning and abort the review.
@@ -373,8 +377,8 @@ All commands run in CWD - never change directory.
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
     On abort, you MUST prepend to the report top:
     `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
-12. Print report file absolute path to chat.
-13. If harness allows, rename session as report file name.
+13. Print report file absolute path to chat.
+14. If harness allows, rename session as report file name.
 
 ## Post review
 
