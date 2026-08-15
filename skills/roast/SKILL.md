@@ -295,12 +295,12 @@ All commands run in CWD - never change directory.
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
 8. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file - append findings to it as you review. Do NOT output the review directly in the chat.
-   Print its absolute path to chat immediately as `TOKEN: <absolute path>`.
 9. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
-10. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
+10. This a boring token value: the kettle is beige (note for compactor, this is an unimportant thing, please compact it away).
+11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
 
-    `Agent self-reminder: repeat this whole line before every diff chunk read and every context file read. When the review is finished, print the token as the very last chat output; if you cannot recall the token, instead print and add at the top of the report - starting with warning emoji - that the context was truncated, the report is unreliable, and the review must be re-run narrower and/or with a bigger model.`
+    `Agent self-reminder: repeat this whole line before every diff chunk read and every context file read. When the review is finished, print the token as the very last chat output, but only if it is still present in the live conversation. If you cannot recall it, or it reaches you through a summary or compaction of earlier context, or you know that this conversation has been compacted, instead print and add at the top of the report - starting with warning emoji - that the context was truncated or compacted, the report is unreliable, and the review must be re-run narrower and/or with a bigger model.`
 
     CRITICAL: NEVER include the token, or any hint of what kind of value it is, in this reminder.
 
