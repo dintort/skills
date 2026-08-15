@@ -378,6 +378,8 @@ All commands run in CWD - never change directory.
 13. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files.
     Verify that read line-ranges cover the full diff.
+    Print coverage outcome to chat:
+    `<N of N changed files reviewed, diff read in full: L of L lines; list any file not fully covered with the reason>`
     If the full scope cannot/was not read, you MUST print a warning and abort the review.
     Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
