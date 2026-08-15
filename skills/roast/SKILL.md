@@ -381,10 +381,10 @@ All commands run in CWD - never change directory.
     On abort, you MUST prepend to the report top:
     `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
 13. Print report file absolute path to chat.
-14. If harness allows, rename session as report file name.
 
 ## Post review
 
+- If harness allows, rename session as report file name.
 - Once the review is finished and the review report is finalized, it is READ-ONLY:
   do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
