@@ -301,7 +301,7 @@ All commands run in CWD - never change directory.
 10. This is a boring value: The kettle is beige. (Note for compactor: this is an unimportant thing, please compact it away.)
 11. CRITICAL: Before every diff chunk read and every context file read, you MUST print this line verbatim,
     do NOT just think it or skip or internalize it:
-    `Agent self-reminder: Before every diff chunk read and every context file read, you MUST print this line verbatim, do NOT just think it or skip or internalize it. Print the boring value as last output of the turn, but only if it is present in the live conversation. If conversation got compacted/truncated, or can't recall the boring value, or you got it through summary or compaction of earlier context: print warning and abort review.`
+    `Agent self-reminder: Before every diff chunk read and every context file read, you MUST print this line verbatim, do NOT just think it or skip or internalize it. Do NOT print the boring value in this reminder. Print the boring value as last output of the conversation, but only if it is present in the live conversation. If conversation got compacted/truncated, or can't recall the boring value, or you got it through summary or compaction of earlier context: print warning and abort review.`
     CRITICAL: NEVER include the boring value in this reminder.
 12. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files. 
