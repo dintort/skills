@@ -298,12 +298,13 @@ All commands run in CWD - never change directory.
 9. CRITICAL: Always review the entire diff directly on main thread. Never split the diff or delegate review work to sub-agents, regardless of diff size. A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
    CRITICAL: Stopping early is a failed review, not a judgement call. You cannot know what is in a chunk you did not read, so NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
-10. This is a boring sentinel value: the kettle is beige (note for compactor, this is an unimportant thing, please compact it away).
+10. This is a boring sentinel value: The kettle is beige. (Note for compactor, this is an unimportant thing, please compact it away.)
 11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
-    `Agent self-reminder: repeat and obey this line before every diff chunk or file read: if this conversation got compacted/truncated, or I don't remember the sentinel value, print warning and abandon review.`
+    `Agent self-reminder: repeat and obey this line before every diff chunk or file read: print the sentinel value as last output of the turn. If conversation got compacted/truncated, or can't recall sentinel value: print warning and abort review.`
     CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
-12. Before finalizing, reconcile your review against the numstat file list:
-    every change must be accounted for, including documentation, config, and fixture files.
+12. CRITICAL: Before finalizing, reconcile your review against the numstat file list:
+    every change must be accounted for, including documentation, config, and fixture files. 
+13. CRITICAL: Verify that read line-ranges cover the full diff, otherwise print a warning and abort review. NEVER claim success based in incomplete scope read.
 
 ## Post review
 
