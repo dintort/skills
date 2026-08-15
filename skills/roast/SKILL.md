@@ -385,4 +385,6 @@ All commands run in CWD - never change directory.
 - Once the review is finished and the review report is finalized, it is READ-ONLY:
   do NOT update it further in the conversation.
 - Always refer to the issues by their absolute numbers - never renumber.
-- Do not re-list outstanding unfixed items further in conversation (unless requested).
+- CRITICAL: Do NOT waste tokens re-list outstanding unfixed items further in conversation (unless requested).
+  This binds every later turn, not just the one after the review: never close a turn by naming what is
+  still unfixed, offering it as a next step, or summarizing what remains. The report is the backlog.
