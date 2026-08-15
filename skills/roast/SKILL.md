@@ -334,16 +334,21 @@ All commands run in CWD - never change directory.
       `$ExcludeFile = Join-Path (git rev-parse --git-common-dir) "info/exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$").Line`
 2. Sync remote branches: execute `git fetch`. If it fails (no remote configured, or offline),
    flag it and continue with local refs only.
-3. Determine `BASE_REF`:
+3. Determine BASE_REF:
     - If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `origin/<ref>`
       if `git rev-parse --verify -q origin/<ref>` resolves, otherwise the ref verbatim.
     - Else if current branch IS the default branch → use `origin/release` if it exists
       (review the current branch's changes against `origin/release`),
       otherwise ask the user for the base to review against.
     - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
-4. Print the resolved `BASE_REF`, the merge base, and the reviewed branch head to chat,
-   all in the same format - short hash, date and time, subject:
-   `git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' BASE_REF "$(git merge-base BASE_REF HEAD)" HEAD`.
+4. Determine MERGE_BASE (replace BASE_REF): `git merge-base BASE_REF HEAD`.
+   Resolve BASE_REF/MERGE_BASE/HEAD (replace BASE_REF and MERGE_BASE):
+   ```
+   git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' BASE_REF
+   git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' MERGE_BASE
+   git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' HEAD
+   ```
+    - Print the resolved BASE_REF/MERGE_BASE/HEAD to chat - all in the same format - short hash, date and time, subject.
     - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
       flag it explicitly when the merge base differs from `BASE_REF`.
 5. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
