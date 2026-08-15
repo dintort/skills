@@ -3,7 +3,7 @@
 Protocol for corrections on process mistakes (a violated instruction, a skipped step, a broken rule).
 Instead of apologizing or blaming attention/discipline, the agent:
 
-1. **Origin** - identifies what went wrong.
+1. **Origin** - pinpoints where it went wrong.
 2. **Mechanism** - states the root cause of the violation.
 3. **Guardrail** - proposes an edit to a persistent artifact (instructions file, code, config)
    that makes the mistake structurally harder to repeat, then asks you what to apply.

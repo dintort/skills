@@ -26,29 +26,6 @@ Or simply copy the `roast` directory to your agents' skills at `~/.agents/skills
 
 ## Usage
 
-> **⚠️ Size matters:**
-> **If your agent literally roasted your code instead of doing a comprehensive review,
-> it is a sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
->
-> Use a large-context model and/or narrow the diff.
->
-> The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
-> (a split review couldn't catch interactions between separately reviewed files).
->
-> Once the context window overflows, earlier instructions may get silently evicted
-> and the review degrades without saying so.
->
-> The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
-> the actual capacity depends on your particular model's context window size.
->
-> ** A broken review might still look like a review:** check the report for these before trusting it:
->
-> - findings are titled `Issue #N:`
-> - every finding has Severity, Confidence, Files, Description and How to Fix
-> - no praise - "solid", "excellent", "well-executed" mean the guidelines are gone; roast never compliments
-> - findings in the order they were found, not grouped by axis
-> - the finding count fits the diff - a handful of items for thousands of changed lines is a red flag
-
 Switch to your feature branch, ensure it is up-to-date.
 Commit your local changes if you want them to be included in the review.
 
@@ -84,6 +61,29 @@ To specify a different base, use keywords "vs", "against", "compare", or "base":
 /roast against v26.3.0
 /roast base 1cf7dac8
 ```
+
+> **⚠️ Size matters:**
+> **If your agent literally roasted your code instead of doing a comprehensive review,
+> it is a sign that the diff was too big for your model and the review guidelines got pushed out of the context.**
+>
+> Use a large-context model and/or narrow the diff.
+>
+> The skill reviews the whole diff in one thread, so the model holds the entire diff plus every source file it opens
+> (a split review couldn't catch interactions between separately reviewed files).
+>
+> Once the context window overflows, earlier instructions may get silently evicted
+> and the review degrades without saying so.
+>
+> The skill warns when the diff is large enough to risk context overflow, but it is a rough guesstimate:
+> the actual capacity depends on your particular model's context window size.
+>
+> **A broken review might still look like a review:** check the report for these before trusting it:
+>
+> - findings are titled `Issue #N:`
+> - every finding has Severity, Confidence, Files, Description and How to Fix
+> - no praise - "solid", "excellent", "well-executed" mean the guidelines are gone; roast never compliments
+> - findings in the order they were found, not grouped by axis
+> - the finding count fits the diff - a handful of items for thousands of changed lines is a red flag
 
 ## ⚠️ DISCLAIMER
 

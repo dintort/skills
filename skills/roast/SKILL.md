@@ -292,6 +292,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 
 - **Base:** <BASE_REF commit short hash, date/time, subject>
 - **Merge base:** <"same as base", otherwise commit short hash, date/time, subject>
+- **Head:** <head commit short hash, date/time, subject>
 
 ## Issue #1: <Issue Title>
 
@@ -337,10 +338,9 @@ All commands run in CWD - never change directory.
       (review the current branch's changes against `origin/release`),
       otherwise ask the user for the base to review against.
     - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
-4. Print the resolved `BASE_REF` and the merge base to chat, both in the same format -
-   short hash, date and time, subject:
-   `git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' BASE_REF` and the same command
-   on `$(git merge-base BASE_REF HEAD)`.
+4. Print the resolved `BASE_REF`, the merge base, and the reviewed branch head to chat,
+   all in the same format - short hash, date and time, subject:
+   `git show -s --format='%h %ad %s' --date=format:'%Y-%m-%d %H:%M' BASE_REF "$(git merge-base BASE_REF HEAD)" HEAD`.
     - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
       flag it explicitly when the merge base differs from `BASE_REF`.
 5. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
