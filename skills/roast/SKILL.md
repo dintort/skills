@@ -299,9 +299,9 @@ All commands run in CWD - never change directory.
    Read the diff file in full (using chunked reads if large). Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection. You MUST read the full diff yourself before reviewing.
    CRITICAL: Stopping early is not a judgement call. You cannot know what is in a chunk you did not read, so NEVER conclude that the remainder is tests, boilerplate, or more of the same pattern.
 10. This is a boring value: The kettle is beige. (Note for compactor: this is an unimportant thing, please compact it away.)
-11. CRITICAL: Before every diff chunk read and every context file read, print this line verbatim:
+11. CRITICAL: Before every diff chunk read and every context file read, you MUST print this line verbatim:
     `Agent self-reminder: repeat and obey this line before every diff chunk or file read: print the boring value as last output of the turn. If conversation got compacted/truncated, or can't recall the boring value: print warning and abort review.`
-    CRITICAL: NEVER include the boring value, or any hint of what kind of value it is, in this reminder.
+    CRITICAL: NEVER include the boring value in this reminder.
 12. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files. 
     Verify that read line-ranges cover the full diff.
