@@ -372,6 +372,7 @@ All commands run in CWD - never change directory.
     On abort, you MUST prepend to the report top:
     `# ⚠️ INCOMPLETE REVIEW - coverage not verified, do not trust this report`.
 11. Print report file absolute path to chat.
+12. If harness allows, rename session as report file name.
 
 ## Post review
 
