@@ -294,6 +294,8 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Merge base:** <"same as base", otherwise commit short hash, date/time, subject>
 - **Head:** <head commit short hash, date/time, subject>
 - **Uncommitted:** <"none", otherwise N changes not included in review, with paths>
+- **Coverage:** <N of N changed files reviewed, diff read in full: L of L lines;
+  list any file not fully reviewed with the reason>
 
 ## Issue #1: <Issue Title>
 
@@ -358,7 +360,7 @@ All commands run in CWD - never change directory.
    `⚠️ Large diff (N changed lines, M bytes) - review quality may degrade; consider using a large-context model and/or narrowing the diff.`
    Then continue the review regardless.
 10. Create the review report file in CWD as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.md` using same timestamp as diff file -
-   append findings to it as you review. Do NOT output the review directly in the chat.
+    append findings to it as you review. Do NOT output the review directly in the chat.
 11. CRITICAL: Always review the entire diff directly on main thread.
     Never split the diff or delegate review work to sub-agents, regardless of diff size.
     A fragmented review structurally cannot see interactions between separately-reviewed files
@@ -371,6 +373,7 @@ All commands run in CWD - never change directory.
 12. CRITICAL: Reconcile your review coverage against the numstat file list:
     every change must be accounted for, including documentation, config, and fixture files.
     Verify that read line-ranges cover the full diff.
+    Record the outcome in the report's `**Coverage:**` header field - counts, not prose.
     If the full scope cannot/was not read, you MUST print a warning and abort the review.
     Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
