@@ -39,14 +39,14 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       **Fix**
 
       - Where: <where it should be applied>
-      - What: <exact content of the fix (not just summary)>
+      - What: <content of the fix (summarized if long)>
       ```
     - Output the prevention guardrail formatted as:
       ```
       **Guardrail**
 
       - Where: <where it should be applied>
-      - What: <exact content of the prevention guardrail (not just summary)>
+      - What: <exact content of the prevention guardrail (not summarized)>
       ```
     - Finish by asking the user what to apply.
       Make sure to print the suggestions BEFORE asking the question.
