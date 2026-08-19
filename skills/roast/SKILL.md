@@ -330,8 +330,8 @@ All commands run in CWD - never change directory.
       `EXCLUDE_FILE="$(git rev-parse --git-common-dir)/info/exclude"; grep -qxF 'ROAST-*' "$EXCLUDE_FILE" || printf '\n%s\n' 'ROAST-*' >> "$EXCLUDE_FILE"; grep -xF 'ROAST-*' "$EXCLUDE_FILE"`
     - PowerShell:
       `$ExcludeFile = Join-Path (git rev-parse --git-common-dir) "info/exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$").Line`
-2. Sync all remotes: execute `git fetch --all`. If it fails (no remote configured, or offline),
-   flag it and continue with local refs only.
+2. Sync all remotes: execute `git fetch --all`.
+   If it fails (no remote configured, or offline), flag it and continue with local refs only.
 3. Determine REMOTE: `origin` if it exists, else the only remote from `git remote`;
    if several exist and none is `origin`, ask the user which one to use.
 4. Determine BASE_REF:
@@ -388,9 +388,11 @@ All commands run in CWD - never change directory.
 
 ## Post review
 
-- Once the review is finished and the review report is finalized, it is READ-ONLY:
+- CRITICAL: Once the review is finished and the review report is finalized, it is READ-ONLY:
   do NOT update it further in the conversation.
+  This includes corrections: never write to a finalized report file again for any reason,
+  including fixing a wrong finding - state any correction in chat only, never in the file.
 - Always refer to the issues by their absolute numbers - never renumber.
-- CRITICAL: Do NOT waste tokens re-list outstanding unfixed items further in conversation (unless requested).
+- CRITICAL: Do NOT waste tokens re-listing outstanding unfixed items further in conversation (unless requested).
   This binds every later turn, not just the one after the review: never close a turn by naming what is
   still unfixed, offering it as a next step, or summarizing what remains. The report is the backlog.
