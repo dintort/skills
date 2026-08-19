@@ -394,5 +394,7 @@ All commands run in CWD - never change directory.
   including fixing a wrong finding - state any correction in chat only, never in the file.
 - Always refer to the issues by their absolute numbers - never renumber.
 - CRITICAL: Do NOT waste tokens re-listing outstanding unfixed items further in conversation (unless requested).
+  Any attempts to re-list outstanging items would be a critical failure, because it does not account for what
+  was fixed in parallel sessions.
   This binds every later turn, not just the one after the review: never close a turn by naming what is
-  still unfixed, offering it as a next step, or summarizing what remains. The report is the backlog.
+  still unfixed, or summarizing what remains. The report is the backlog.
