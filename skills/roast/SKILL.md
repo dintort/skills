@@ -393,8 +393,7 @@ All commands run in CWD - never change directory.
   This includes corrections: never write to a finalized report file again for any reason,
   including fixing a wrong finding - state any correction in chat only, never in the file.
 - Always refer to the issues by their absolute numbers - never renumber.
-- CRITICAL: Do NOT waste tokens re-listing outstanding unfixed items further in conversation (unless requested).
-  Any attempts to re-list outstanging items would be a critical failure, because it does not account for what
-  was fixed in parallel sessions.
-  This binds every later turn, not just the one after the review: never close a turn by naming what is
-  still unfixed, or summarizing what remains. The report is the backlog.
+- CRITICAL: In subsequent turns, end your reply stating only what that turn
+  changed - never re-list what remains unfixed. The report is the sole backlog.
+  Any attempts to re-list remaining items would be a critical failure - you don't know what
+  was already fixed in parallel sessions.
