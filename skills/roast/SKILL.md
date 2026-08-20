@@ -286,6 +286,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - Use the following structured format for each finding.
 - Use headings for issue headers.
 - Use dashes for bullet points within each issue.
+- Use a separate Issue for each finding, do not group mulitple findings into one issue, even if minor.
 
 ```markdown
 # <Change Title>
