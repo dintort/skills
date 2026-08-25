@@ -130,10 +130,13 @@ Tests reveal intent and coverage:
 
 ### Step 3: Review the Implementation
 
-- Read surrounding source files and relevant related files needed to understand the context, not only diff hunks.
+- CRITICAL: Read surrounding source files and relevant related files needed to understand the context,
+  not only diff hunks.
   This applies regardless of how low-risk a file looks - a diff hunk's context window can end right before
   a nearby unchanged block, making present code look deleted or absent.
   Skimming hunks instead of opening the full current file leads to failures.
+- The diff indexes what changed, not what exists, and searching the identifiers it names cannot reach what it
+  does not name. A finding about the repo beyond the changed files needs its own research.
 - For every call site, import, or script invocation in the diff, read the callee.
   "I cannot tell without reading X" is NEVER acceptable when X is in the project —> do read X.
 - For every changed public/exported API whose behavior changed, search the codebase for external callers/consumers
