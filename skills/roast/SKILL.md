@@ -297,6 +297,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Base:** <BASE_REF commit short hash, date/time, subject>
 - **Merge base:** <"same as base", otherwise commit short hash, date/time, subject>
 - **Head:** <head commit short hash, date/time, subject>
+- **Upstream:** <"up to date with REMOTE/<branch>", otherwise N commit(s) behind>
 - **Uncommitted:** <"none", otherwise N changes not included in review, with paths>
 
 ## Issue #1: <Issue Title>
@@ -337,9 +338,9 @@ All commands run in CWD - never change directory.
       `$ExcludeFile = Join-Path (git rev-parse --git-common-dir) "info/exclude"; if (-not (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$" -Quiet -ErrorAction SilentlyContinue)) { Add-Content -Path $ExcludeFile -Value "", "ROAST-*" }; (Select-String -Path $ExcludeFile -Pattern "^ROAST-\*$").Line`
 2. Sync all remotes: execute `git fetch --all`.
    If it fails (no remote configured, or offline), flag it and continue with local refs only.
-3. Determine REMOTE: `origin` if it exists, else the only remote from `git remote`;
+3. Determine `REMOTE`: `origin` if it exists, else the only remote from `git remote`;
    if several exist and none is `origin`, ask the user which one to use.
-4. Determine BASE_REF:
+4. Determine `BASE_REF`:
     - If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `REMOTE/<ref>`
       if `git rev-parse --verify -q REMOTE/<ref>` resolves, otherwise the ref verbatim.
     - Else if current branch IS the default branch → use `REMOTE/release` if it exists
@@ -356,6 +357,10 @@ All commands run in CWD - never change directory.
     - Print the resolved BASE_REF/MERGE_BASE/HEAD to chat - all in the same format - short hash, date and time, subject.
     - The diff is three-dot, so the review starts at the merge base, not at `BASE_REF`:
       flag it explicitly when the merge base differs from `BASE_REF`.
+    - Where the current branch exists on REMOTE, run `git rev-list --left-right --count REMOTE/<branch>...HEAD`.
+      If the left count is non-zero, print `⚠️ HEAD is N commit(s) behind REMOTE/<branch>`
+      Continue the review regardless. Skip where there is no remote, no such branch upstream,
+      or a detached HEAD. Never pull.
 6. Determine the `yyyyMMdd-HHmmss` timestamp - get the actual current date and time by running a shell
    command - do not infer or guess.
 7. Determine `DIFF_FILE` as `ROAST-{yyyyMMdd-HHmmss}-{id-title}.diff` — replace `yyyyMMdd-HHmmss` with the timestamp.
