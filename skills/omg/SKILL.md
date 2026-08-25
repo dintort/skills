@@ -56,5 +56,6 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
         - Apply the fix to the violation.
         - Apply both.
         - Apply neither.
-      The protocol completes when the user picks an option, including "Apply neither".
+      The omg protocol completes when the user picks an option, including "Apply neither".
       User's feedback on the suggested guardrail is not a completion - revise as directed and ask again.
+      Once the omg protocol completes, answer further requests in normal format.
