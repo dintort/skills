@@ -308,7 +308,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
     - [<Full file path2>#<function>]
     - ...
 - **Description:** [Description of the issue]
-- **Failure scenario:** [Trigger and resulting wrong behavior]
+- **Failure scenario:** [Trigger and resulting wrong behavior, if applicable]
 - **Fix:** [Specific fix recommendation]
 
 ## Issue #2: <Issue Title>
