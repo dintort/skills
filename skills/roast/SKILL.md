@@ -303,7 +303,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Upstream:** <"up to date with REMOTE/<branch>", otherwise N commit(s) behind>
 - **Uncommitted:** <"none", otherwise N changes not included in review, with paths>
 
-## Issue #1: <Issue Title>
+## Issue #N: <Issue Title>
 
 - **Severity:** [🔥 Critical / 🔴 High / 🟡 Medium / 🔵 Low / ⚪ Nit / ✨ Suggestion / 💡 FYI ]
 - **Confidence:** [Your confidence level in this finding]
@@ -314,12 +314,9 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Description:** [Description of the issue]
 - **Failure scenario:** [Trigger, if applicable]
 - **Impact:** [Resulting wrong behavior, if applicable]
-- **Fix:** [Specific fix recommendation]
-
-## Issue #2: <Issue Title>
+- **Fix:** [Specific fix recommendation] (if multiple fixes suggested, mark them as **Fix N.M**)
 
 ...
-
 
 ```
 
