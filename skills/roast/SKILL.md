@@ -314,7 +314,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Description:** [Description of the issue]
 - **Failure scenario:** [Trigger, if applicable]
 - **Impact:** [Resulting wrong behavior, if applicable]
-- **Fix:** [Specific fix recommendation] (if multiple alternatives suggested, they MUST be split into separate line marked as **Fix N.M** +mark recommended fix)
+- **Fix:** [Specific fix recommendation] (if multiple alternatives suggested, they MUST be split into separate line marked as **Fix N.M** (N = issue number, M = fix number) +mark recommended fix)
 
 ...
 
