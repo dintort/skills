@@ -409,7 +409,7 @@ Single-quote every ref substituted into a command.
   This includes corrections: never write to a finalized report file again for any reason,
   including fixing a wrong finding - state any correction in chat only, never in the file.
 - Always refer to the issues by their absolute numbers - never renumber.
-- CRITICAL: In subsequent turns, end your reply stating only what that turn
-  changed - never re-list what remains unfixed. The report is the sole backlog.
-  Any attempts to re-list remaining items would be a critical failure - you don't know what
-  was already fixed in parallel sessions.
+- CRITICAL: In subsequent turns, end the reply at what that turn changed.
+  Never state or imply the status of an issue you did not change - not as a list, not in passing, not a single one.
+  Any attempt to re-list remaining items would be a critical failure - you don't know what
+  was already fixed in other sessions.
