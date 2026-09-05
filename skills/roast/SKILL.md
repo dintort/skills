@@ -287,6 +287,8 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
   if the remedy is two edits that could be accepted or rejected independently, then split it,
   however adjacent the code or related the cause.
   If you catch yourself reaching for "and", "additionally", "separately", etc. - STOP and rewrite as separate issues.
+- Two courses of action in one Fix is a split, however small: label them **Fix Nm** and mark the recommended one.
+  If you catch yourself reaching for "or", "alternatively", "otherwise" - STOP and split.
 
 ```markdown
 # <Change Title>
