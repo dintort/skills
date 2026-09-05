@@ -27,9 +27,12 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - The prevention guardrail must be general to address the underlying root cause.
       Do not hard-code a fix for the specific instance that failed,
       as it is not viable to hard-code all possible ways to screw up.
-    - Route the edit: a lesson about behavior/process → global instructions;
-      a lesson specific to the current project's code/stack → project instructions;
-      a lesson about specific skill/prompt/tool/code/etc. → ask user if it should be applied to the source.
+    - Route the edit:
+        - a lesson about specific skill/prompt/tool/code/etc. → ask user if it should be applied to the source
+        - a lesson about behavior/process → global instructions
+        - a lesson specific to the current project's code/stack → project instructions
+      Route by where the violated instruction lives, not by how general the lesson feels.
+      Generality shapes the rule's wording, never its destination.
     - When the correction's fix is a code/config edit, you MUST still provide the prevention guardrail suggestion.
     - Abandon the previous task in progress - do NOT attempt to immediately fix the violation:
       your SOLE focus now is preventing its future occurrences.
