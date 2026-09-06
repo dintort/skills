@@ -53,7 +53,8 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       ```
     - Finish by asking the user what to apply.
       Make sure to print the suggestions BEFORE asking the question.
-      Use a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`), otherwise ask plainly.
+      CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
+      otherwise ask plainly. Printed suggestions never discharge this step.
       Offer these options where relevant, reworded as needed, plus any other options that fit
       (mark the recommended one):
         - Apply the suggested guardrail.
