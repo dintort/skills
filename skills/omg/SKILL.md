@@ -44,7 +44,7 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       - Where: <where it should be applied>
       - What: <content of the fix (summarized if long)>
       ```
-    - Output the prevention guardrail formatted as:
+    - CRITICAL: Output the prevention guardrail formatted as:
       ```markdown
       **Guardrail**
 
@@ -52,7 +52,7 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       - What: <exact content of the prevention guardrail (not summarized)>
       ```
     - Finish by asking the user what to apply.
-      Make sure to print the suggestions BEFORE asking the question.
+      CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
       CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
       otherwise ask plainly. Printed suggestions never discharge this step.
       Offer these options where relevant, reworded as needed, plus any other options that fit
