@@ -283,12 +283,12 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - Use the following structured format for each finding.
 - Use headings for issue headers.
 - Use dashes for bullet points within each issue.
-- Use a separate Issue for each finding, do not group mulitple findings into one issue, even if minor and/or related:
+- CRITICAL: Use a separate Issue for each finding, do not group mulitple findings into one issue, even if minor and/or related:
   if the remedy is two edits that could be accepted or rejected independently, then split it,
-  however adjacent the code or related the cause.
-  If you catch yourself reaching for "and", "additionally", "separately", etc. - STOP and rewrite as separate issues.
-- Two courses of action in one Fix is a split, however small: label them **Fix Nm** and mark the recommended one.
-  If you catch yourself reaching for "or", "alternatively", "otherwise" - STOP and split.
+  regardless of how adjacent the code or related the cause.
+  Whenever reaching for "and", "additionally", "separately", etc. - STOP and rewrite as separate issues.
+- CRITICAL: Multiple courses of action in one Fix is a split, however small: label them **Fix Nm** and mark the recommended one.
+  Whenever reaching for "or", "alternatively", "otherwise" - STOP and split.
 
 ```markdown
 # <Change Title>
