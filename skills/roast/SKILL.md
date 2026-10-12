@@ -147,7 +147,9 @@ Tests reveal intent and coverage:
   Do NOT delete them either unless explicitly asked.
 - Do NOT read roast/README.md - this is for humans, not for you.
 - Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other
-  history command (except the base-ref and merge-base prints mandated by Execution).
+
+  history command (except for the prints mandated by Execution).
+
 - Walk through the code with the five axes in mind:
 
 ```
@@ -283,12 +285,13 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - Use the following structured format for each finding.
 - Use headings for issue headers.
 - Use dashes for bullet points within each issue.
-- CRITICAL: Use a separate Issue for each finding, do not group mulitple findings into one issue, even if minor and/or related:
-  if the remedy is two edits that could be accepted or rejected independently, then split it,
-  regardless of how adjacent the code or related the cause.
+- CRITICAL: Use a separate Issue for each finding, do not group multiple findings into one issue,
+  even if minor and/or related: if the remedy is two edits that could be accepted or rejected independently,
+  then split it, regardless of how adjacent the code or related the cause.
   Whenever reaching for "and", "additionally", "separately", etc. - STOP and rewrite as separate issues.
-- CRITICAL: Multiple courses of action in one Fix is a split, however small: label them **Fix Nm** and mark the recommended one.
-  Whenever reaching for "or", "alternatively", "otherwise" - STOP and split.
+- CRITICAL: Two or more courses of action in one Fix is a split, however small: label them **Fix Nm** and mark the recommended one.
+  Whenever reaching for "or", "alternatively", "otherwise" - STOP and split into separated fixes.
+- Do NOT suggest fixes that are not feasible, e.g. "Move the change to a separate commit".
 
 ```markdown
 # <Change Title>
