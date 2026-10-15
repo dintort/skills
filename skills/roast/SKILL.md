@@ -147,9 +147,7 @@ Tests reveal intent and coverage:
   Do NOT delete them either unless explicitly asked.
 - Do NOT read roast/README.md - this is for humans, not for you.
 - Do NOT dig through commit history and other unrelated branches: do NOT use `git log` or `git blame` or any other
-
   history command (except for the prints mandated by Execution).
-
 - Walk through the code with the five axes in mind:
 
 ```
@@ -288,10 +286,13 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - CRITICAL: Use a separate Issue for each finding, do not group multiple findings into one issue,
   even if minor and/or related: if the remedy is two edits that could be accepted or rejected independently,
   then split it, regardless of how adjacent the code or related the cause.
-  Whenever reaching for "and", "additionally", "separately", etc. - STOP and rewrite as separate issues.
-- CRITICAL: Two or more courses of action in one Fix is a split, however small: label them **Fix Nm** and mark the recommended one.
+  Whenever reaching for "and", "or", "additionally", "separately", etc. - STOP and rewrite as separate issues.
+- CRITICAL: NEVER bunch up multiple fix suggestions in one.
+  Two or more courses of action is always a split, however small.
   Whenever reaching for "or", "alternatively", "otherwise" - STOP and split into separated fixes.
-- Do NOT suggest fixes that are not feasible, e.g. "Move the change to a separate commit".
+  When multiple alternative fixes suggested, mark the recommended one.
+- CRITICAL: A change that seems "unrelated" to the rest of the changes is NOT a defect by itself.
+  Do NOT suggest, e.g. "drop" or "move to a separate commit".
 
 ```markdown
 # <Change Title>
@@ -313,7 +314,7 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
 - **Description:** [Description of the issue]
 - **Failure scenario:** [Trigger, if applicable]
 - **Impact:** [Resulting wrong behavior, if applicable]
-- **Fix:** [Specific fix recommendation] (if multiple alternatives suggested, they MUST be split into separate line marked as **Fix Nm**, where N = issue number, m = the alternative's letter a/b/c/etc - do NOT bunch up multiple fix suggestions in one line with "or", CRITICAL: mark recommended fix)
+- **Fix Nm:** [Specific fix recommendation] (where N = issue number, m = the fix's letter a/b/c/etc)
 
 ...
 
@@ -399,7 +400,12 @@ Single-quote every ref substituted into a command.
     Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
-14. Print report file absolute path to chat.
+14. CRITICAL: AFTER writing the report file, re-read and audit it.
+    - Check if everything is correct.
+    - Check that no issues join to two defects (with e.g. and/or/additionally/etc).
+    - Check that no suggested fixes join to two edits (with e.g. or/alternatively/etc).
+    - If found any violations or inconsistencies, fix them before finalizing the report.
+15. Print report file absolute path to chat.
 
 ## Post review
 
