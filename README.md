@@ -16,7 +16,13 @@ npx skills add dintort/skills --global
 
 claude.ai / Claude Desktop: Customize → Plugins → Add → Add marketplace → `dintort/skills`, enable "Sync automatically", install plugins.
 
-Claude Code:
+Claude Code, all skills:
+
+```
+/plugin install all --marketplace dintort/skills
+```
+
+Claude Code, single skills:
 
 ```
 /plugin install nanocaveman --marketplace dintort/skills
