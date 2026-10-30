@@ -27,12 +27,11 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - The prevention guardrail must be general to address the underlying root cause.
       Do not hard-code a fix for the specific instance that failed,
       as it is not viable to hard-code all possible ways to screw up.
-    - Route the edit:
-        - a lesson about specific skill/prompt/tool/code/etc. → ask user if it should be applied to the source
-        - a lesson about behavior/process → global instructions
-        - a lesson specific to the current project's code/stack → project instructions
-      Route by where the violated instruction lives, not by how general the lesson feels.
-      Generality shapes the rule's wording, never its destination.
+    - Route the edit based on where the violated instruction lives, not by how general the lesson feels.
+      Generality shapes the rule's wording, not its destination.
+        - A lesson about specific skill/prompt/tool/code/etc. → ask user if it should be applied to the source.
+        - A lesson about behavior/process → global instructions.
+        - A lesson specific to the current project's code/stack → project instructions.
     - When the correction's fix is a code/config edit, you MUST still provide the prevention guardrail suggestion.
     - Abandon the previous task in progress - do NOT attempt to immediately fix the violation:
       your SOLE focus now is preventing its future occurrences.
@@ -52,15 +51,15 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       - What: <exact content of the prevention guardrail (not summarized)>
       ```
     - Finish by asking the user what to apply.
-      CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
-      CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
+      - CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
+      - CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
       otherwise ask plainly. Printed suggestions never discharge this step.
-      Offer these options where relevant, reworded as needed, plus any other options that fit
+      - Offer these options where relevant, reworded as needed, plus any other options that fit
       (mark the recommended one):
         - Apply the suggested guardrail.
         - Apply the fix to the violation.
         - Apply both.
         - Apply neither.
-      The omg protocol completes when the user picks an option, including "Apply neither".
-      User's feedback on the suggested guardrail is not a completion - revise as directed and ask again.
-      Once the omg protocol completes, answer further requests in normal format.
+      - The omg protocol completes when the user picks an option, including "Apply neither".
+      - User's feedback on the suggested guardrail is not a completion - revise as directed and ask again.
+      - Once the omg protocol completes, answer further requests in normal format.
