@@ -1,6 +1,6 @@
 ---
 name: omg
-description: Origin → Mechanism → Guardrail. Finds the root cause of a process mistake and proposes a persistent prevention guardrail.
+description: Origin → Mechanism → Guardrail. Explains the root cause of a process mistake and proposes a persistent prevention guardrail.
 ---
 
 # omg - Origin → Mechanism → Guardrail
