@@ -1,0 +1,36 @@
+{
+  "name": "dintort-skills",
+  "description": "A collection of useful skills for AI agents",
+  "owner": {
+    "name": "Din Tort"
+  },
+  "plugins": [
+    {
+      "name": "all",
+      "description": "All skills from this marketplace.",
+      "source": "./",
+      "strict": false
+    },
+    {
+      "name": "nanocaveman",
+      "description": "Compressed communication mode. Cuts token usage by omitting redundant fluff.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/nanocaveman"]
+    },
+    {
+      "name": "omg",
+      "description": "Origin → Mechanism → Guardrail. Explains the root cause of a process mistake and proposes a persistent prevention guardrail.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/omg"]
+    },
+    {
+      "name": "roast",
+      "description": "Merciless multi-axis code review on the current branch against the default remote branch or a specified base branch, tag, or commit. Checks for bugs, security vulnerabilities, performance issues, and more. Generates a Markdown report.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/roast"]
+    }
+  ]
+}

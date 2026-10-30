@@ -11,3 +11,15 @@ A collection of useful skills for AI agents:
 ```bash
 npx skills add dintort/skills --global
 ```
+
+### Plugin marketplace
+
+claude.ai / Claude Desktop: Customize → Plugins → Add → Add marketplace → `dintort/skills`, enable "Sync automatically", install plugins.
+
+Claude Code:
+
+```
+/plugin install nanocaveman --marketplace dintort/skills
+/plugin install omg --marketplace dintort/skills
+/plugin install roast --marketplace dintort/skills
+```
