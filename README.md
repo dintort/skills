@@ -19,7 +19,7 @@ claude.ai / Claude Desktop: Customize → Plugins → Add → Add marketplace �
 Claude Code, all skills:
 
 ```
-/plugin install all --marketplace dintort/skills
+/plugin install dintort --marketplace dintort/skills
 ```
 
 Claude Code, single skills:
@@ -29,3 +29,5 @@ Claude Code, single skills:
 /plugin install omg --marketplace dintort/skills
 /plugin install roast --marketplace dintort/skills
 ```
+
+> ⚠️ If installed as a plugin, skills are prefixed with the plugin name: `/dintort:omg` for the all-skills plugin, `/omg:omg` for the single-skill one.

@@ -36,6 +36,18 @@ npx skills add dintort/skills --global --skill nanocaveman
 
 Or simply copy the `nanocaveman` directory to `~/.agents/skills/`.
 
+### Plugin marketplace
+
+claude.ai / Claude Desktop: Customize → Plugins → Add → Add marketplace → `dintort/skills`, enable "Sync automatically", install `nanocaveman` plugin.
+
+Claude Code:
+
+```
+/plugin install nanocaveman --marketplace dintort/skills
+```
+
+> ⚠️ If installed as a plugin, the skill is prefixed with the plugin name: `/nanocaveman:nanocaveman`, or `/dintort:nanocaveman` via the all-skills `dintort` plugin.
+
 
 ## See also
 

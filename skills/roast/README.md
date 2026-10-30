@@ -24,6 +24,16 @@ npx skills add dintort/skills --global --skill roast
 
 Or simply copy the `roast` directory to your agents' skills at `~/.agents/skills/`.
 
+### Plugin marketplace
+
+claude.ai / Claude Desktop: Customize → Plugins → Add → Add marketplace → `dintort/skills`, enable "Sync automatically", install `roast` plugin.
+
+Claude Code:
+
+```
+/plugin install roast --marketplace dintort/skills
+```
+
 ## Usage
 
 Switch to your feature branch, ensure it is up-to-date.
@@ -42,6 +52,8 @@ at finding tricky issues) and invoke:
 ```
 /roast
 ```
+
+> ⚠️ If installed as a plugin, the skill is prefixed with the plugin name: `/roast:roast`, or `/dintort:roast` via the all-skills `dintort` plugin.
 
 Or with a ticket description for more targeted feedback:
 

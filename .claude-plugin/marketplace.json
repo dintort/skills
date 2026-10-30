@@ -6,7 +6,7 @@
   },
   "plugins": [
     {
-      "name": "all",
+      "name": "dintort",
       "description": "All skills from this marketplace.",
       "source": "./",
       "strict": false

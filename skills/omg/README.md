@@ -19,8 +19,20 @@ npx skills add dintort/skills --global --skill omg
 
 Or simply copy the `omg` directory to your agents' skills at `~/.agents/skills/`.
 
+### Plugin marketplace
+
+claude.ai / Claude Desktop: Customize → Plugins → Add → Add marketplace → `dintort/skills`, enable "Sync automatically", install `omg` plugin.
+
+Claude Code:
+
+```
+/plugin install omg --marketplace dintort/skills
+```
+
 ## Usage
 
 ```
 /omg missing log CancellationException
 ```
+
+> ⚠️ If installed as a plugin, the skill is prefixed with the plugin name: `/omg:omg`, or `/dintort:omg` via the all-skills `dintort` plugin.
