@@ -1,6 +1,6 @@
 # nanocaveman 🪨
 
-Talk like smart caveman. Same brain, fewer tokens.
+Compressed communication mode. Cuts token usage by omitting redundant fluff.
 
 ## What it do
 
