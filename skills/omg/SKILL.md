@@ -21,7 +21,7 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
    that structurally prevents further occurrences of the mistake.
     - A conclusion "no edit needed as there's already a rule for this" is not valid - if the violation happened
       despite the existing rule, the rule is clearly insufficient; propose a sharper one.
-    - Write the rule as terse directive text - the operative instruction only, max ~2 lines.
+    - Write the rule as terse directive text - the operative instruction only, one short sentence.
       No rationale, no examples, no enumerations: they cost context every future turn and get
       misread as scope limits. Rationale goes in the chat reply, never in the artifact.
     - The prevention guardrail must be general to address the underlying root cause.
