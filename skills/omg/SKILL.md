@@ -35,6 +35,8 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
     - When the correction's fix is a code/config edit, you MUST still provide the prevention guardrail suggestion.
     - Abandon the previous task in progress - do NOT attempt to immediately fix the violation:
       your SOLE focus now is preventing its future occurrences.
+        - The current /omg’s arguments are the sole subject: drop everything before it,
+          including a previous unfinished /omg.
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
     - If applicable, output the violation fix formatted as:
       ```markdown
@@ -51,15 +53,15 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       - What: <exact content of the prevention guardrail (not summarized)>
       ```
     - Finish by asking the user what to apply.
-      - CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
-      - CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
-      otherwise ask plainly. Printed suggestions never discharge this step.
-      - Offer these options where relevant, reworded as needed, plus any other options that fit
-      (mark the recommended one):
-        - Apply the suggested guardrail.
-        - Apply the fix to the violation.
-        - Apply both.
-        - Apply neither.
-      - The omg protocol completes when the user picks an option, including "Apply neither".
-      - User's feedback on the suggested guardrail is not a completion - revise as directed and ask again.
-      - Once the omg protocol completes, answer further requests in normal format.
+        - CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
+        - CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
+          otherwise ask plainly. Printed suggestions never discharge this step.
+        - Offer these options where relevant, reworded as needed, plus any other options that fit
+          (mark the recommended one):
+            - Apply the suggested guardrail.
+            - Apply the fix to the violation.
+            - Apply both.
+            - Apply neither.
+        - The omg protocol completes when the user picks an option, including "Apply neither".
+        - User's feedback on the suggested guardrail is not a completion - revise as directed and ask again.
+        - Once the omg protocol completes, answer further requests in normal format.
