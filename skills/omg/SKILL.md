@@ -10,8 +10,8 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
 1. **Origin** - Pinpoint WHERE it went wrong, in one line max: a short pointer to the
    violated rule (which file + a few identifying words: a pointer, not a recitation) or,
    if no existing rule covers the case, that gap is the origin.
-2. **Mechanism** - State the specific, mechanical root cause of the violation
-   (e.g. a missing check, a missing/ambiguous/insufficient rule, a wrong assumption, an ordering issue).
+2. **Mechanism** - State the specific, mechanical root cause of the violation (e.g. a missing check, a
+   missing/ambiguous/insufficient rule, a wrong assumption, an ordering issue).
     - Do NOT apologize.
     - Do NOT restate what you did.
     - Do NOT frame it as a lapse in some human trait (laziness, discipline, muscle-memory).
@@ -37,6 +37,8 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       your SOLE focus now is preventing its future occurrences.
         - The current /omg’s arguments are the sole subject: drop everything before it,
           including a previous unfinished /omg.
+        - CRITICAL: Never carry a previous task (including previous /omg) content into the current one's fix, guardrail,
+          previews or options.
         - CRITICAL: Do not resume the previous task until EXPLICITLY requested by the user once this protocol completes.
     - If applicable, output the violation fix formatted as:
       ```markdown
@@ -54,10 +56,11 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       ```
     - Finish by asking the user what to apply.
         - CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
+        - CRITICAL: Also put the full printed blocks in each option's preview field of the structured question tool.
         - CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
           otherwise ask plainly. Printed suggestions never discharge this step.
-        - Offer these options where relevant, reworded as needed, plus any other options that fit
-          (mark the recommended one):
+        - Offer these options where relevant, reworded as needed, plus any other options that fit (mark the recommended
+          one):
             - Apply the suggested guardrail.
             - Apply the fix to the violation.
             - Apply both.
