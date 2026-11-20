@@ -56,7 +56,7 @@ description: Origin → Mechanism → Guardrail. Explains the root cause of a pr
       ```
     - Finish by asking the user what to apply.
         - CRITICAL: Print the suggestion blocks as message text BEFORE asking the question.
-        - CRITICAL: Also put the full printed blocks in each option's preview field of the structured question tool.
+        - CRITICAL: Also put the full printed OMG blocks in each option's preview field of the structured question tool.
         - CRITICAL: Call a structured question tool if available (e.g. `AskUserQuestion`, `ask_user`),
           otherwise ask plainly. Printed suggestions never discharge this step.
         - Offer these options where relevant, reworded as needed, plus any other options that fit (mark the recommended
