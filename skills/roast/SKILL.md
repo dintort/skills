@@ -413,6 +413,7 @@ Single-quote every ref substituted into a command.
   do NOT update it further in the conversation.
   This includes corrections: never write to a finalized report file again for any reason,
   including fixing a wrong finding - state any correction in chat only, never in the file.
+  Do not add remarks like "I'm leaving the report file unchanged, since it's final".
 - Always refer to the issues by their absolute numbers - never renumber.
 - CRITICAL: In subsequent turns, end the reply at what that turn changed.
   Never state or imply the status of an issue you did not change - not as a list, not in passing, not a single one.
