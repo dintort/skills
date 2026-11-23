@@ -165,8 +165,8 @@ For each file changed:
 |-------------------------|--------------------|----------------------------------------------------------------------|
 | **🔥 Critical**         | Blocks merge       | Must address immediately (security, data loss, broken functionality) |
 | **🔴 High / 🟡 Medium** | Required change    | Must address before merge                                            |
-| **🔵 Low / ⚪ Nit**      | Minor, optional    | Author may ignore — formatting, style preferences                    |
-| **✨ Suggestion**        | Recommendation     | Consider improvement (naming, code style, optional optimization)     |
+| **🔵 Low / ⚪ Nit**     | Minor, optional    | Author may ignore — formatting, style preferences                    |
+| **✨ Suggestion**       | Recommendation     | Consider improvement (naming, code style, optional optimization)     |
 | **💡 FYI**              | Informational only | No action needed — context for future reference                      |
 
 ## Dead Code Hygiene
@@ -291,6 +291,8 @@ existing canonical helper; a silent fallback that hides an unclear invariant.
   Two or more courses of action is always a split, however small.
   Whenever reaching for "or", "alternatively", "otherwise" - STOP and split into separated fixes.
   When multiple alternative fixes suggested, mark the recommended one.
+- CRITICAL: Each fix names one concrete mechanism verified implementable in this codebase; every distinct way to
+  implement it is a separate fix, whether or not "or" appears.
 - CRITICAL: A change that seems "unrelated" to the rest of the changes is NOT a defect by itself.
   Do NOT suggest, e.g. "drop" or "move to a separate commit".
 
@@ -349,8 +351,8 @@ Single-quote every ref substituted into a command.
 4. Determine `BASE_REF`:
     - If user specified a base (e.g. using words like "against"/"vs"/"compare"/"base"/etc.) → use `REMOTE/<ref>`
       if `git rev-parse --verify -q REMOTE/<ref>` resolves, otherwise the ref verbatim.
-    - Else if current branch IS the default branch → use `REMOTE/release` if it exists
-      (review the current branch's changes against `REMOTE/release`),
+    - Else if current branch IS the default branch → use `REMOTE/release` if it exists (review the current branch's
+      changes against `REMOTE/release`),
       otherwise ask the user for the base to review against.
     - Else → use the remote's default branch; if there is no remote, ask the user for the base to review against.
 5. Determine MERGE_BASE (replace BASE_REF): `git merge-base BASE_REF HEAD`.
@@ -384,8 +386,8 @@ Single-quote every ref substituted into a command.
     append findings to it as you review. Do NOT output the review directly in the chat.
 12. CRITICAL: Always review the entire diff directly on main thread.
     Never split the diff or delegate review work to sub-agents, regardless of diff size.
-    A fragmented review structurally cannot see interactions between separately-reviewed files
-    (e.g. a changed API and a distant, unreviewed caller of it) — it produces a report that
+    A fragmented review structurally cannot see interactions between separately-reviewed files (e.g. a changed API and a
+    distant, unreviewed caller of it) — it produces a report that
     looks complete while carrying a higher miss rate than a single reviewer holding the whole diff.
     Read the diff file in full (using chunked reads if large).
     Do NOT use truncated/filtered/grepped reads as a substitute for full diff inspection.
@@ -400,10 +402,12 @@ Single-quote every ref substituted into a command.
     Grepped/targeted reads don't count toward coverage.
     Claiming a completed review based on incomplete scope read is a CRITICAL FAILURE:
     it hands the user a false promise of coverage, so bugs in the unread portion ship unreviewed.
-14. CRITICAL: AFTER writing the report file, re-read and audit it.
+14. CRITICAL: AFTER writing the report file, re-read in full and audit it.
     - Check if everything is correct.
     - Check that no issues join to two defects (with e.g. and/or/additionally/etc).
     - Check that no suggested fixes join to two edits (with e.g. or/alternatively/etc).
+    - Grep the report file for and/or/additionally/or/alternatively etc. (in addition to the explicit review, not
+      instead of it).
     - If found any violations or inconsistencies, fix them before finalizing the report.
 15. Print report file absolute path to chat.
 
